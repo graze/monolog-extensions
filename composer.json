@@ -1,0 +1,34 @@
+{
+    "name": "graze/monolog-extensions",
+    "description": "Monolog extensions for use within Graze",
+    "keywords": ["debug", "debugging", "error", "exception", "handler", "handling", "log", "logger", "logging"],
+    "homepage": "https://github.com/graze/MonologExtensions",
+
+    "version": "1.0.0",
+
+    "authors": [
+        {
+            "name": "Graze tech team",
+            "homepage": "https://github.com/graze/MonologExtensions/graphs/contributors"
+        }
+    ],
+
+    "autoload": {
+        "psr-0": {
+            "Graze\\Monolog": "./src"
+        }
+    },
+
+    "require": {
+        "monolog/monolog": "~1.6.0"
+    },
+    "require-dev": {
+        "adlawson/timezone": "~1.0.0",
+        "aws/aws-sdk-php": "~2.4.6",
+        "mockery/mockery": "~0.8.0",
+        "phpunit/phpunit": "~3.7.27"
+    },
+    "suggest": {
+        "aws/aws-sdk-php": "Log errors to AWS services like DynamoDb"
+    }
+}
