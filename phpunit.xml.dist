@@ -1,0 +1,27 @@
+<phpunit bootstrap="./tests/bootstrap.php" colors="true">
+
+    <!-- Test suites -->
+    <testsuites>
+        <testsuite name="integration">
+            <directory suffix="IntegrationTest.php">./tests/integration</directory>
+        </testsuite>
+        <testsuite name="unit">
+            <directory suffix="Test.php">./tests/unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- Coverage filter -->
+    <filter>
+        <whitelist>
+            <directory>./src</directory>
+        </whitelist>
+    </filter>
+
+    <!-- Listeners -->
+    <listeners>
+        <listener class="Graze\Debug\Test\Listener\ErrorHandlerListener"/>
+        <listener class="Graze\Debug\Test\Listener\ExceptionHandlerListener"/>
+        <listener class="Mockery\Adapter\Phpunit\TestListener"/>
+    </listeners>
+
+</phpunit>
