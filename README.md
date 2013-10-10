@@ -1,6 +1,7 @@
 # Monolog Extensions #
 
 **Version:** *1.0.0*<br/>
+**Master build:** [![Master branch build status][travis-master]][travis]<br/>
 
 This library supplies additional log handlers, formatters and processors for use with [Monolog][monolog].
 The intention is to make use of the library internally with the aim to eventually submit relevant parts to Monolog
@@ -55,6 +56,8 @@ You can find a copy of this license at http://www.opensource.org/licenses/mit or
 
 
 <!-- Links -->
+[travis]: https://travis-ci.org/graze/MonologExtensions
+[travis-master]: https://travis-ci.org/graze/MonologExtensions.png?branch=master
 [monolog]:   https://github.com/Seldaek/monolog
 [packagist]: https://packagist.org/packages/graze/monolog-extensions
 [vagrant]:   http://vagrantup.com
