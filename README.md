@@ -2,7 +2,7 @@
 
 **Version:** *1.0.0*<br/>
 
-This library supplies additional log handlers, formatters and processors for use with Monolog.
+This library supplies additional log handlers, formatters and processors for use with [Monolog][monolog].
 The intention is to make use of the library internally with the aim to eventually submit relevant parts to Monolog
 core.<br/>
 It can be installed in whichever way you prefer, but we recommend [Composer][packagist].
@@ -55,6 +55,7 @@ You can find a copy of this license at http://www.opensource.org/licenses/mit or
 
 
 <!-- Links -->
+[monolog]:   https://github.com/Seldaek/monolog
 [packagist]: https://packagist.org/packages/graze/monolog-extensions
 [vagrant]:   http://vagrantup.com
 [license]:   /LICENSE
