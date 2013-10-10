@@ -19,8 +19,6 @@
 
     <!-- Listeners -->
     <listeners>
-        <listener class="Graze\Debug\Test\Listener\ErrorHandlerListener"/>
-        <listener class="Graze\Debug\Test\Listener\ExceptionHandlerListener"/>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
     </listeners>
 
