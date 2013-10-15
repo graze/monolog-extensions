@@ -1,6 +1,6 @@
 # Monolog Extensions #
 
-**Version:** *1.0.0*<br/>
+**Version:** *1.0.1*<br/>
 **Master build:** [![Master branch build status][travis-master]][travis]<br/>
 **Develop build:** [![Develop branch build status][travis-develop]][travis]
 
