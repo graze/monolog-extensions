@@ -20,6 +20,11 @@ use Monolog\Logger;
 class DynamoDbHandler extends AbstractProcessingHandler
 {
     /**
+     * @const string
+     */
+    const DATE_FORMAT = 'Y-m-d\TH:i:s.uO';
+
+    /**
      * @var DynamoDbClient
      */
     protected $client;
@@ -48,7 +53,8 @@ class DynamoDbHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        $formatted = $this->client->formatAttributes($record['formatted']);
+        $filtered  = $this->filterEmptyFields($record['formatted']);
+        $formatted = $this->client->formatAttributes($filtered);
 
         $this->client->putItem(array(
             'TableName' => $this->table,
@@ -57,10 +63,21 @@ class DynamoDbHandler extends AbstractProcessingHandler
     }
 
     /**
+     * @param array $record
+     * @return array
+     */
+    protected function filterEmptyFields(array $record)
+    {
+        return array_filter($record, function($value) {
+            return !empty($value) || false === $value || 0 === $value;
+        });
+    }
+
+    /**
      * @return FormatterInterface
      */
     protected function getDefaultFormatter()
     {
-        return new FlatStructureFormatter();
+        return new FlatStructureFormatter(self::DATE_FORMAT);
     }
 }

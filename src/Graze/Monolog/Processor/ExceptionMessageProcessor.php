@@ -21,7 +21,9 @@ class ExceptionMessageProcessor
     public function __invoke(array $record)
     {
         if (isset($record['context']['exception'])) {
-            $record['message'] =  $record['context']['exception']->getMessage();
+            $exception = $record['context']['exception'];
+            $message = $record['context']['exception']->getMessage();
+            $record['message'] = 'Uncaught ' . get_class($exception) . ': ' . $message;
         }
 
         return $record;
