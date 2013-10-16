@@ -18,9 +18,25 @@ use Graze\Monolog\Processor\HttpProcessor;
 use Monolog\ErrorHandler;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
+use Psr\Log\LogLevel;
 
 class ErrorHandlerBuilder
 {
+    /**
+     * @var array
+     */
+    protected $errorLevelMap = array();
+
+    /**
+     * @var string
+     */
+    protected $exceptionLevel;
+
+    /**
+     * @var string
+     */
+    protected $fatalLevel;
+
     /**
      * @var HandlerInterface[]
      */
@@ -44,6 +60,7 @@ class ErrorHandlerBuilder
         $this->setName('error');
         $this->setHandlers($this->getDefaultHandlers());
         $this->setProcessors($this->getDefaultProcessors());
+        $this->setExceptionLevel(LogLevel::CRITICAL);
     }
 
     /**
@@ -51,13 +68,7 @@ class ErrorHandlerBuilder
      */
     public function build()
     {
-        return new ErrorHandler(
-            new Logger(
-                $this->getName(),
-                $this->getHandlers(),
-                $this->getProcessors()
-            )
-        );
+        return new ErrorHandler($this->buildLogger());
     }
 
     /**
@@ -66,12 +77,68 @@ class ErrorHandlerBuilder
     public function buildAndRegister()
     {
         return ErrorHandler::register(
-            new Logger(
-                $this->getName(),
-                $this->getHandlers(),
-                $this->getProcessors()
-            )
+            $this->buildLogger(),
+            $this->getErrorLevelMap(),
+            $this->getExceptionLevel(),
+            $this->getFatalLevel()
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getFatalLevel()
+    {
+        return $this->fatalLevel;
+    }
+
+    /**
+     * @param string $level
+     * @return ErrorHandlerBuilder
+     */
+    public function setFatalLevel($level)
+    {
+        $this->fatalLevel = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrorLevelMap()
+    {
+        return $this->errorLevelMap;
+    }
+
+    /**
+     * @param array $map
+     * @return ErrorHandlerBuilder
+     */
+    public function setErrorLevelMap(array $map)
+    {
+        $this->errorLevelMap = $map;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExceptionLevel()
+    {
+        return $this->exceptionLevel;
+    }
+
+    /**
+     * @param string $level
+     * @return ErrorLevelBuilder
+     */
+    public function setExceptionLevel($level)
+    {
+        $this->exceptionLevel = $level;
+
+        return $this;
     }
 
     /**
@@ -84,7 +151,7 @@ class ErrorHandlerBuilder
 
     /**
      * @param string $name
-     * @return ErrorHandlerInterface
+     * @return ErrorHandlerBuilder
      */
     public function setName($name)
     {
@@ -146,7 +213,7 @@ class ErrorHandlerBuilder
 
     /**
      * @param Callable $processors
-     * @return ErrorHandlerInterface
+     * @return ErrorHandlerBuilder
      */
     public function setProcessors(array $processors)
     {
@@ -157,6 +224,18 @@ class ErrorHandlerBuilder
         }
 
         return $this;
+    }
+
+    /**
+     * @return Logger
+     */
+    protected function buildLogger()
+    {
+        return new Logger(
+            $this->getName(),
+            $this->getHandlers(),
+            $this->getProcessors()
+        );
     }
 
     /**
