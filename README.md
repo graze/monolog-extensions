@@ -11,7 +11,7 @@ It can be installed in whichever way you prefer, but we recommend [Composer][pac
 ```json
 {
     "require": {
-        "graze/monolog-extensions": "~1.0.0"
+        "graze/monolog-extensions": "~1.1.0"
     }
 }
 ```
