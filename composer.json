@@ -4,7 +4,7 @@
     "keywords": ["debug", "debugging", "error", "exception", "handler", "handling", "log", "logger", "logging"],
     "homepage": "https://github.com/graze/MonologExtensions",
 
-    "version": "1.1.0",
+    "version": "1.1.1",
     "license": "MIT",
 
     "authors": [
