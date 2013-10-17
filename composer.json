@@ -27,9 +27,11 @@
         "adlawson/timezone": "~1.0.0",
         "aws/aws-sdk-php": "~2.4.6",
         "mockery/mockery": "~0.8.0",
-        "phpunit/phpunit": "~3.7.27"
+        "phpunit/phpunit": "~3.7.27",
+        "mindscape/raygun4php": "dev-master"
     },
     "suggest": {
-        "aws/aws-sdk-php": "Log errors to AWS services like DynamoDb"
+        "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
+        "mindscape/raygun4php": "Write records to Raygun.io"
     }
 }
