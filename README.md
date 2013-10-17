@@ -16,7 +16,13 @@ It can be installed in whichever way you prefer, but we recommend [Composer][pac
 }
 ```
 
-### Basic usage ###
+
+The extensions included with this library are:
+ - ErrorHandlerBuilder
+ - DynamoDbHandler
+ - RaygunHandler
+
+### ErrorHandlerBuilder usage ###
 ```php
 <?php
 use Aws\DynamoDb\DynamoDbClient;
@@ -29,6 +35,40 @@ $builder->setName('project-name')
         ->addHandler(new DynamoDbHandler($client, 'ErrorLog'));
 
 $builder->buildAndRegister();
+```
+
+### DynamoDbHandler Usage ###
+```php
+<?php
+use Aws\DynamoDb\DynamoDbClient;
+use Graze\Monolog\Handler\DynamoDbHandler;
+use Monolog\Logger;
+
+// Create the client, using the AWS SDK
+$client = DynamoDbClient::factory(array(/**config**/));
+
+// Create the handler
+$handler = new DynamoDbHandler($client, 'table-name');
+
+// Create the logger
+new Logger('project-name', array($handler));
+```
+
+### RaygunHandler Usage ###
+```php
+<?php
+use Graze\Monolog\Handler\RaygunHandler;
+use Monolog\Logger;
+use Raygun4php\RaygunClient;
+
+// Create the client, using the Raygun SDK
+$client = new RaygunClient('api-key');
+
+// Create the handler
+$handler = new RaygunHandler($client);
+
+// Create the logger
+$logger = new Logger('project-name', array($handler));
 ```
 
 
