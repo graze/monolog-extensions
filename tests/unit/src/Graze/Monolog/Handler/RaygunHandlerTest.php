@@ -33,9 +33,8 @@ class RaygunHandlerTest extends TestCase
 
     public function testHandleError()
     {
-        $record = $this->getRecord();
+        $record = $this->getRecord(300, 'foo', array('file' => 'bar', 'line' => 1));
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
-        $formatted = array('message' => 'foo', 'context' => array('file' => 'bar', 'line' => 1));
         $handler = new RaygunHandler($this->client);
         $handler->setFormatter($formatter);
 
@@ -43,7 +42,7 @@ class RaygunHandlerTest extends TestCase
              ->shouldReceive('format')
              ->once()
              ->with($record)
-             ->andReturn($formatted);
+             ->andReturn(array());
         $this->client
              ->shouldReceive('SendError')
              ->once()
@@ -55,9 +54,8 @@ class RaygunHandlerTest extends TestCase
     public function testHandleException()
     {
         $exception = new \Exception('foo');
-        $record = $this->getRecord();
+        $record = $this->getRecord(300, 'foo', array('exception' => $exception));
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
-        $formatted = array('context' => array('exception' => $exception));
         $handler = new RaygunHandler($this->client);
         $handler->setFormatter($formatter);
 
@@ -65,7 +63,7 @@ class RaygunHandlerTest extends TestCase
              ->shouldReceive('format')
              ->once()
              ->with($record)
-             ->andReturn($formatted);
+             ->andReturn(array());
         $this->client
              ->shouldReceive('SendException')
              ->once()

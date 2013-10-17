@@ -41,13 +41,12 @@ class RaygunHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        $formatted = $record['formatted'];
-        $context = $formatted['context'];
+        $context = $record['context'];
 
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
-            $this->writeException($formatted);
+            $this->writeException($record);
         } elseif (isset($context['file']) && $context['line']) {
-            $this->writeError($formatted);
+            $this->writeError($record);
         } else {
             throw new \InvalidArgumentException('Invalid record given.');
         }
