@@ -21,11 +21,23 @@ use Monolog\Logger;
 class SnsEventHandler extends AbstractEventHandler
 {
     const DATE_FORMAT = 'Y-m-d\TH:i:s.uO';
-
-    public function __construct(SnsClient $client, $topic, $level = Logger::DEBUG, $bubble = true)
-    {
-        if (!defined('Aws\Common\Aws::VERSION') || version_compare('3.0', Aws::VERSION, '<=')) {
-            throw new \RuntimeException('The SnsHandler is only known to work with the AWS SDK 2.x releases');
+    /**
+     * @param SnsClient $client
+     * @param string    $topic  aws TopicArn
+     * @param int       $level
+     * @param boolean   $bubble
+     */
+    public function __construct(
+        SnsClient $client,
+        $topic,
+        $level = Logger::DEBUG,
+        $bubble = true
+    ) {
+        if (!defined('Aws\Common\Aws::VERSION') ||
+            version_compare('3.0', Aws::VERSION, '<=')) {
+            throw new \RuntimeException(
+                'The SnsHandler is only known to work with the AWS SDK 2.x releases'
+            );
         }
 
         $this->client = $client;
@@ -48,7 +60,7 @@ class SnsEventHandler extends AbstractEventHandler
     }
 
     /**
-     * {@inheritdoc}
+     * @return Graze\Monolog\Formatter\JsonDateAwareFormatter
      */
     protected function getDefaultFormatter()
     {

@@ -34,11 +34,24 @@ class DynamoDbEventHandler extends AbstractEventHandler
      */
     protected $table;
 
-
-    public function __construct(DynamoDbClient $client, $table, array $secondaryKeys = array(), $level = Logger::DEBUG, $bubble = true)
-    {
-        if (!defined('Aws\Common\Aws::VERSION') || version_compare('3.0', Aws::VERSION, '<=')) {
-            throw new \RuntimeException('The DynamoDbHandler is only known to work with the AWS SDK 2.x releases');
+    /**
+     * @param DynamoDbClient $client
+     * @param string $table dynamodb table name
+     * @param array $secondaryKeys array of secondary indexes for dynamodb
+     * @param int $level
+     * @param boolean $bubble
+     */
+    public function __construct(
+        DynamoDbClient $client,
+        $table,
+        array $secondaryKeys = array(),
+        $level = Logger::DEBUG, $bubble = true
+    ) {
+        if (!defined('Aws\Common\Aws::VERSION') ||
+            version_compare('3.0', Aws::VERSION, '<=')) {
+            throw new \RuntimeException(
+                'The DynamoDbHandler is only known to work with the AWS SDK 2.x releases'
+            );
         }
 
         $this->client = $client;
@@ -70,13 +83,13 @@ class DynamoDbEventHandler extends AbstractEventHandler
      */
     protected function filterEmptyFields(array $record)
     {
-        return array_filter($record, function($value) {
+        return array_filter($record, function ($value) {
             return !empty($value) || false === $value || 0 === $value;
         });
     }
 
     /**
-     * {@inheritdoc}
+     * @return Monolog\Formatter\ScalarFormatter
      */
     protected function getDefaultFormatter()
     {

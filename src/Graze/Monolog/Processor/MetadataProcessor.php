@@ -16,6 +16,10 @@ use Graze\Monolog\Processor\AbstractKeyValueProcessor;
 
 class MetadataProcessor extends AbstractKeyValueProcessor
 {
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function __construct($key,$value)
     {
         parent::__construct($key,$value,'metadata');

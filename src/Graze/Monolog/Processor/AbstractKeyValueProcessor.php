@@ -34,13 +34,19 @@ abstract class AbstractKeyValueProcessor
      * @param mixed $value
      * @param mixed $location
      */
-    public function __construct($key,$value,$location)
+    public function __construct($key, $value, $location)
     {
         $this->key = $key;
         $this->value = $value;
         $this->location = $location;
     }
 
+    /**
+     * adds key-value to given location in $record
+     *
+     * @param  array  $record
+     * @return array $record
+     */
     public function __invoke(array $record)
     {
         if (!array_key_exists($this->location, $record)) {

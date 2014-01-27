@@ -17,12 +17,12 @@ class DynamoDbSecondaryKeyProcessor
     /**
      * @var array
      */
-    protected $secondaryKeys;
+    private $secondaryKeys;
 
     /**
      * @var array
      */
-    protected $foundKeys;
+    private $foundKeys = array();
 
     /**
      * @param array $secondaryKeys
@@ -30,12 +30,14 @@ class DynamoDbSecondaryKeyProcessor
     public function __construct(array $secondaryKeys = array())
     {
         $this->secondaryKeys = $secondaryKeys;
-        $this->foundKeys = array();
     }
 
     /**
+     * Tree searches $record for all keys in $secondaryKeys and
+     * adds them to $record, see below for details
+     *
      * @param array $record
-     * @return array
+     * @return array $updated
      */
     public function __invoke(array $record)
     {
@@ -45,6 +47,12 @@ class DynamoDbSecondaryKeyProcessor
         return $updated;
     }
 
+    /**
+     * tree searches $record for all array keys in $secondaryKeys
+     * adds all found key-values to $foundKeys
+     *
+     * @param array $record
+     */
     private function searchForKeys(array $record)
     {
         foreach ($record as $key => $value) {
@@ -56,7 +64,18 @@ class DynamoDbSecondaryKeyProcessor
             }
         }
     }
-
+    /**
+     * All key-values in the $foundKeys are added directly as elements of
+     * $record as long as that key is currently unset in $record.
+     *
+     * if the key already exists in $record it is **not** replaced, similarly
+     * only the first of multiple search results for a given key is used
+     *
+     * The key-value pairs also remain in their original location within the
+     * structure of $record
+     *
+     * @param array $record
+     */
     private function addSecondaryKeys(array $record)
     {
         foreach ($this->foundKeys as $key => $value) {

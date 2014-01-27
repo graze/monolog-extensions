@@ -20,14 +20,36 @@ abstract class AbstractEventHandler extends AbstractProcessingHandler
     /**
      * Event handlers handle all events by default
      *
+     * @param array $record
+     * @return boolean always returns true
      */
     public function isHandling(array $record)
     {
         return true;
     }
 
+    /**
+     * @return Graze\Monolog\Formatter\JsonDateAwareFormatter
+     */
     protected function getDefaultFormatter()
     {
         return new JsonDateAwareFormatter();
+    }
+
+    /**
+     * overrides normal monolog handler behaviour by not checking log
+     * level as events have no log level
+     * @param  array  $record
+     * @return boolean
+     */
+    public function handle(array $record)
+    {
+        $record = $this->processRecord($record);
+
+        $record['formatted'] = $this->getFormatter()->format($record);
+
+        $this->write($record);
+
+        return false === $this->bubble;
     }
 }

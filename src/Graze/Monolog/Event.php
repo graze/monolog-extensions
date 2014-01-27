@@ -17,33 +17,64 @@ use Graze\Monolog\Processor\DataProcessor;
 use Graze\Monolog\Processor\MetadataProcessor;
 use DateTime;
 
-
 class Event extends Logger
 {
+    /**
+     * @param array $handlers
+     * @param array $processors
+     * @return $this
+     */
     public function __construct(array $handlers = array(), array $processors = array())
     {
         parent::__construct('defaultEvent', $handlers, $processors);
         return $this;
     }
 
-    public function data($key,$value)
+    /**
+     * adds a new data processor to the stack which adds the given
+     * key-value pair to the data store of the event
+     *
+     * @param  string $key
+     * @param  mixed $value
+     * @return $this
+     */
+    public function data($key, $value)
     {
-        $this->pushProcessor(new DataProcessor($key,$value));
+        $this->pushProcessor(new DataProcessor($key, $value));
         return $this;
     }
 
-    public function metadata($key,$value)
+    /**
+     * adds a new metadata processor to the stack which adds the given
+     * key-value pair to the metadata store of the event
+     *
+     * @param  string $key
+     * @param  mixed $value
+     * @return $this
+     */
+    public function metadata($key, $value)
     {
-        $this->pushProcessor(new MetadataProcessor($key,$value));
+        $this->pushProcessor(new MetadataProcessor($key, $value));
         return $this;
     }
 
+    /**
+     * sets the (string) name of the event by which it will be identified
+     * @param  string $name
+     * @return $this
+     */
     public function identifier($name)
     {
         $this->name = $name;
         return $this;
     }
 
+    /**
+     * triggers all the event handlers set for this event
+     * an event-specific version of  \Monolog\Logger::addRecord
+     *
+     * @return boolean true if at least one handler handles this event
+     */
     public function publish()
     {
         if (!static::$timezone) {
