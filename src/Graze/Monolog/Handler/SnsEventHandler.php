@@ -15,26 +15,21 @@ namespace Graze\Monolog\Handler;
 use Aws\Common\Aws;
 use Aws\Sns\SnsClient;
 use Graze\Monolog\Formatter\JsonDateAwareFormatter;
-use Graze\Monolog\Handler\AbstractEventHandler;
-use Monolog\Logger;
+use Graze\Monolog\Handler\EventHandler;
+use Monolog\Handler\AbstractProcessingHandler;
 
-class SnsEventHandler extends AbstractEventHandler
+class SnsEventHandler extends AbstractProcessingHandler
 {
+    use EventHandlerTrait;
+
     const DATE_FORMAT = 'Y-m-d\TH:i:s.uO';
+
     /**
      * @param SnsClient $client
-     * @param string    $topic  aws TopicArn
-     * @param int       $level
-     * @param boolean   $bubble
+     * @param string $topic  aws TopicArn
      */
-    public function __construct(
-        SnsClient $client,
-        $topic,
-        $level = Logger::DEBUG,
-        $bubble = true
-    ) {
-        if (!defined('Aws\Common\Aws::VERSION') ||
-            version_compare('3.0', Aws::VERSION, '<=')) {
+    public function __construct(SnsClient $client, $topic) {
+        if (!defined('Aws\Common\Aws::VERSION') || version_compare('3.0', Aws::VERSION, '<=')) {
             throw new \RuntimeException(
                 'The SnsHandler is only known to work with the AWS SDK 2.x releases'
             );
@@ -42,8 +37,6 @@ class SnsEventHandler extends AbstractEventHandler
 
         $this->client = $client;
         $this->topic = $topic;
-
-        parent::__construct($level, $bubble);
     }
 
 
@@ -52,7 +45,6 @@ class SnsEventHandler extends AbstractEventHandler
      */
     protected function write(array $record)
     {
-
         $this->client->publish(array(
             'TopicArn' => $this->topic,
             'Message' => $record['formatted'],

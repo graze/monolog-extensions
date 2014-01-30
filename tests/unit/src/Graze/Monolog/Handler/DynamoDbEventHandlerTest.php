@@ -3,10 +3,10 @@ namespace Graze\Monolog\Handler;
 
 use Mockery as m;
 use Graze\Monolog\Handler\DynamoDbEventHandler;
-use Graze\Monolog\Test\EventHandlerTestCase;
+use \Monolog\TestCase;
 
 
-class DynamoDbEventHandlerTest extends EventHandlerTestCase
+class DynamoDbEventHandlerTest extends TestCase
 {
     public function setUp()
     {
@@ -33,6 +33,12 @@ class DynamoDbEventHandlerTest extends EventHandlerTestCase
     {
         $handler = new DynamoDbEventHandler($this->client, 'foo');
         $this->assertInstanceOf('Monolog\Formatter\ScalarFormatter', $handler->getFormatter());
+    }
+
+    public function testIsHandling()
+    {
+        $handler = new DynamoDbEventHandler($this->client, 'foo');
+        $this->assertTrue($handler->isHandling($this->getRecord()));
     }
 
     public function testHandle()
@@ -62,12 +68,5 @@ class DynamoDbEventHandlerTest extends EventHandlerTestCase
              )));
 
         $handler->handle($record);
-    }
-
-
-    public function testSecondaryKeys()
-    {
-        $handler = new DynamoDbEventHandler($this->client, 'foo', array('bar','ketchup'));
-        $this->assertInstanceOf('Graze\Monolog\Processor\DynamoDbSecondaryKeyProcessor', $handler->popProcessor());
     }
 }

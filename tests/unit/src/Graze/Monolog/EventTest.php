@@ -11,43 +11,63 @@ class EventTest extends TestCase
         $this->assertInstanceOf('Graze\Monolog\Event', new Event());
     }
 
+    public function setupHandlerWithValidationCallback($callback)
+    {
+        $handler = $this->getMock('Monolog\Handler\HandlerInterface');
+        $handler->expects($this->once())
+                ->method('handle')
+                ->with($this->callback($callback));
+
+        return $handler;
+    }
+
     public function testIdentifier()
     {
-        $event = new Event();
-        $event->identifier('foo');
-        $reflectionClass = new \ReflectionClass($event);
-        $nameProperty = $reflectionClass->getProperty('name');
-        $nameProperty->setAccessible(true);
-        $name = $nameProperty->getValue($event);
-        $this->assertEquals('foo', $name);
+        $callback = function($data) {
+            return 'foo' === $data['eventIdentifier'];
+        };
+        $handler = $this->setupHandlerWithValidationCallback($callback);
+
+        $event = new Event(array($handler));
+        $event->setIdentifier('foo');
+        $event->publish();
     }
 
     public function testData()
     {
-        $event = new Event();
-        $event->data('foo',5);
-        $processor = $event->popProcessor();
-        $this->assertInstanceOf('Graze\Monolog\Processor\DataProcessor', $processor);
+        $callback = function($data) {
+            return 5 === $data['data']['foo'];
+        };
+        $handler = $this->setupHandlerWithValidationCallback($callback);
+
+        $event = new Event(array($handler));
+        $event->setData('foo',5);
+        $event->publish();
     }
 
     public function testMetadata()
     {
-        $event = new Event();
-        $event->metadata('bar',array());
-        $processor = $event->popProcessor();
-        $this->assertInstanceOf('Graze\Monolog\Processor\MetadataProcessor', $processor);
+        $callback = function($data) {
+            return array() === $data['metadata']['bar'];
+        };
+        $handler = $this->setupHandlerWithValidationCallback($callback);
+
+        $event = new Event(array($handler));
+        $event->setMetadata('bar',array());
+        $event->publish();
     }
 
     public function testPublish()
     {
-        $event = new Event();
-        $handler = $this->getMockForAbstractClass('Graze\Monolog\Handler\AbstractEventHandler');
-        $event->pushHandler($handler);
+        $handler = $this->getMock('Monolog\Handler\HandlerInterface');
+        $handler->expects($this->once())
+                ->method('handle');
 
+        $event = new Event(array($handler));
         $this->assertTrue($event->publish());
     }
 
-    public function testPublishFailsNoHandler()
+    public function testPublishFalseNoHandler()
     {
         $event = new Event();
         $this->assertFalse($event->publish());

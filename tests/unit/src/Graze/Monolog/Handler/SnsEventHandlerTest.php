@@ -3,9 +3,9 @@ namespace Graze\Monolog\Handler;
 
 use Mockery as m;
 use Graze\Monolog\Handler\SnsEventHandler;
-use Graze\Monolog\Test\EventHandlerTestCase;
+use Monolog\TestCase;
 
-class SnsEventHandlerTest extends EventHandlerTestCase
+class SnsEventHandlerTest extends TestCase
 {
     public function setUp()
     {
@@ -32,6 +32,12 @@ class SnsEventHandlerTest extends EventHandlerTestCase
     {
         $handler = new SnsEventHandler($this->client, 'foo');
         $this->assertInstanceOf('Graze\Monolog\Formatter\JsonDateAwareFormatter', $handler->getFormatter());
+    }
+
+    public function testIsHandling()
+    {
+        $handler = new SnsEventHandler($this->client, 'foo');
+        $this->assertTrue($handler->isHandling($this->getRecord()));
     }
 
     public function testHandle()

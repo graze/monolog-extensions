@@ -22,7 +22,6 @@ class JsonDateAwareFormatter extends NormalizerFormatter
     public function format(array $record)
     {
         $data = parent::format($record);
-
         return $this->toJson($data, true);
     }
 

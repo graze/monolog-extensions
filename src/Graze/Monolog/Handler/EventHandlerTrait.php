@@ -10,18 +10,18 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
-namespace Graze\Monolog\Processor;
+namespace Graze\Monolog\Handler;
 
-use Graze\Monolog\Processor\AbstractKeyValueProcessor;
-
-class MetadataProcessor extends AbstractKeyValueProcessor
+trait EventHandlerTrait
 {
     /**
-     * @param string $key
-     * @param mixed $value
+     * Event handlers handle all events by default
+     *
+     * @param array $record
+     * @return boolean always returns true
      */
-    public function __construct($key,$value)
+    public function isHandling(array $record)
     {
-        parent::__construct($key,$value,'metadata');
+        return true;
     }
 }

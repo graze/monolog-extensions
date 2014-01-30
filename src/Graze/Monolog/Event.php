@@ -12,104 +12,110 @@
  */
 namespace Graze\Monolog;
 
-use Monolog\Logger;
-use Graze\Monolog\Processor\DataProcessor;
-use Graze\Monolog\Processor\MetadataProcessor;
 use DateTime;
+use DateTimeZone;
 
-class Event extends Logger
+class Event
 {
     /**
+     * @var array
+     */
+    private $eventData;
+
+    /**
+     * @var array of event handlers
+     */
+    private $handlers;
+
+    /**
+     * @var \DateTimeZone
+     */
+    protected static $timezone;
+
+    /**
      * @param array $handlers
-     * @param array $processors
      * @return $this
      */
-    public function __construct(array $handlers = array(), array $processors = array())
+    public function __construct(array $handlers = array())
     {
-        parent::__construct('defaultEvent', $handlers, $processors);
+        $this->handlers = $handlers;
+        $this->eventData = array(
+            'eventIdentifier' => 'defaultEvent',
+            'timestamp'       => $this->getNow(),
+            'data'            => array(),
+            'metadata'        => array(),
+
+        );
+
         return $this;
     }
 
     /**
-     * adds a new data processor to the stack which adds the given
-     * key-value pair to the data store of the event
+     * sets $value under key $key in data store
      *
      * @param  string $key
      * @param  mixed $value
      * @return $this
      */
-    public function data($key, $value)
+    public function setData($key, $value)
     {
-        $this->pushProcessor(new DataProcessor($key, $value));
+        $this->eventData['data'][$key] = $value;
         return $this;
     }
 
     /**
-     * adds a new metadata processor to the stack which adds the given
-     * key-value pair to the metadata store of the event
+     * sets $value under key $key in metadata store
      *
      * @param  string $key
      * @param  mixed $value
      * @return $this
      */
-    public function metadata($key, $value)
+    public function setMetadata($key, $value)
     {
-        $this->pushProcessor(new MetadataProcessor($key, $value));
+        $this->eventData['metadata'][$key] = $value;
         return $this;
     }
 
     /**
-     * sets the (string) name of the event by which it will be identified
-     * @param  string $name
+     * sets the (string) identifier of the event by which it will be identified
+     *
+     * @param  string $identifier
      * @return $this
      */
-    public function identifier($name)
+    public function setIdentifier($identifier)
     {
-        $this->name = $name;
+        $this->eventData['eventIdentifier'] = $identifier;
         return $this;
     }
 
     /**
      * triggers all the event handlers set for this event
-     * an event-specific version of  \Monolog\Logger::addRecord
      *
-     * @return boolean true if at least one handler handles this event
+     * @return  boolean true if at least one handler set
      */
     public function publish()
     {
-        if (!static::$timezone) {
-            static::$timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
-        }
-
-        $event = array(
-            'eventIdentifier' => (string) $this->name,
-            'timestamp' => DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), static::$timezone)->setTimezone(static::$timezone),
-            'data' => array(),
-            'metadata' => array(),
-        );
-
-        // check if any handler will handle this message
-        $handlerKey = null;
-        foreach ($this->handlers as $key => $handler) {
-            if ($handler->isHandling($event)) {
-                $handlerKey = $key;
-                break;
-            }
-        }
-        // none found
-        if (null === $handlerKey) {
+        if (empty($this->handlers)) {
             return false;
         }
 
-        // found at least one, process message and dispatch it
-        foreach ($this->processors as $processor) {
-            $event = call_user_func($processor, $event);
+        foreach ($this->handlers as $handler) {
+            $handler->handle($this->eventData);
         }
-        while (isset($this->handlers[$handlerKey]) &&
-            false === $this->handlers[$handlerKey]->handle($event)) {
-            $handlerKey++;
+        return true;
+    }
+
+    /**
+     * returns a datetime object representing the current instant with microseconds
+     *
+     * @return \DateTime
+     */
+    private function getNow()
+    {
+        if (!static::$timezone) {
+            static::$timezone = new DateTimeZone(date_default_timezone_get() ?: 'UTC');
         }
 
-        return true;
+        return DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), static::$timezone)->setTimezone(static::$timezone);
     }
 }

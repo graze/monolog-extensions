@@ -33,9 +33,8 @@ class DynamoDbSecondaryKeyProcessor
     }
 
     /**
-     * Tree searches $record for all keys in $secondaryKeys and
-     * adds them to $record, see below for details
-     *
+     * Retrieves array keys for use as secondary indexes
+     * 
      * @param array $record
      * @return array $updated
      */
@@ -64,6 +63,7 @@ class DynamoDbSecondaryKeyProcessor
             }
         }
     }
+
     /**
      * All key-values in the $foundKeys are added directly as elements of
      * $record as long as that key is currently unset in $record.
