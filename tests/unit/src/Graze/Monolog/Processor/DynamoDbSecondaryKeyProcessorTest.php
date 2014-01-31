@@ -2,7 +2,6 @@
 namespace Graze\Monolog\Processor;
 
 use Monolog\TestCase;
-use Graze\Monolog\Processor\DynamoDbSecondaryKeyProcessor;
 
 class DynamoDbSecondaryKeyProcessorTest extends TestCase
 {
@@ -39,4 +38,3 @@ class DynamoDbSecondaryKeyProcessorTest extends TestCase
 
     }
 }
-

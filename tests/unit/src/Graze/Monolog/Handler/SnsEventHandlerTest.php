@@ -1,7 +1,6 @@
 <?php
 namespace Graze\Monolog\Handler;
 
-use Graze\Monolog\Handler\SnsEventHandler;
 use Monolog\TestCase;
 
 class SnsEventHandlerTest extends TestCase

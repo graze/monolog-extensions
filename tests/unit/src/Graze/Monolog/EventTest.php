@@ -1,7 +1,6 @@
 <?php
 namespace Graze\Monolog;
 
-use Graze\Monolog\Event;
 use Monolog\TestCase;
 
 class EventTest extends TestCase

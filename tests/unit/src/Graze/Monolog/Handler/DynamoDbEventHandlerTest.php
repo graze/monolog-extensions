@@ -1,7 +1,6 @@
 <?php
 namespace Graze\Monolog\Handler;
 
-use Graze\Monolog\Handler\DynamoDbEventHandler;
 use \Monolog\TestCase;
 
 class DynamoDbEventHandlerTest extends TestCase

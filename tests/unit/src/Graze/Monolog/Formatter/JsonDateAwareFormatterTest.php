@@ -1,7 +1,6 @@
 <?php
 namespace Graze\Monolog\Formatter;
 
-use Mockery as m;
 use Monolog\TestCase;
 
 class JsonDateAwareFormatterTest extends TestCase

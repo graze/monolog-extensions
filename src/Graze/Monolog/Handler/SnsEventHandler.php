@@ -37,6 +37,7 @@ class SnsEventHandler extends AbstractProcessingHandler
 
         $this->client = $client;
         $this->topic = $topic;
+        parent::__construct();
     }
 
 
