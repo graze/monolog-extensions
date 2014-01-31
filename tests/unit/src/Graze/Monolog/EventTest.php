@@ -6,14 +6,17 @@ use Monolog\TestCase;
 
 class EventTest extends TestCase
 {
-    public function testConstruct()
-    {
-        $this->assertInstanceOf('Graze\Monolog\Event', new Event());
-    }
-
-    public function setupHandlerWithValidationCallback($callback)
+    public function setupMockHandler()
     {
         $handler = $this->getMock('Monolog\Handler\HandlerInterface');
+        $handler->expects($this->once())
+                ->method('handle');
+        return $handler;
+    }
+
+    public function setupMockHandlerWithValidationCallback($callback)
+    {
+        $handler = $this->setupMockHandler();
         $handler->expects($this->once())
                 ->method('handle')
                 ->with($this->callback($callback));
@@ -21,12 +24,17 @@ class EventTest extends TestCase
         return $handler;
     }
 
+    public function testConstruct()
+    {
+        $this->assertInstanceOf('Graze\Monolog\Event', new Event());
+    }
+
     public function testIdentifier()
     {
         $callback = function($data) {
             return 'foo' === $data['eventIdentifier'];
         };
-        $handler = $this->setupHandlerWithValidationCallback($callback);
+        $handler = $this->setupMockHandlerWithValidationCallback($callback);
 
         $event = new Event(array($handler));
         $event->setIdentifier('foo');
@@ -38,7 +46,7 @@ class EventTest extends TestCase
         $callback = function($data) {
             return 5 === $data['data']['foo'];
         };
-        $handler = $this->setupHandlerWithValidationCallback($callback);
+        $handler = $this->setupMockHandlerWithValidationCallback($callback);
 
         $event = new Event(array($handler));
         $event->setData('foo',5);
@@ -50,7 +58,7 @@ class EventTest extends TestCase
         $callback = function($data) {
             return array() === $data['metadata']['bar'];
         };
-        $handler = $this->setupHandlerWithValidationCallback($callback);
+        $handler = $this->setupMockHandlerWithValidationCallback($callback);
 
         $event = new Event(array($handler));
         $event->setMetadata('bar',array());
@@ -59,9 +67,7 @@ class EventTest extends TestCase
 
     public function testPublish()
     {
-        $handler = $this->getMock('Monolog\Handler\HandlerInterface');
-        $handler->expects($this->once())
-                ->method('handle');
+        $handler = $this->setupMockHandler();
 
         $event = new Event(array($handler));
         $this->assertTrue($event->publish());
@@ -72,5 +78,15 @@ class EventTest extends TestCase
         $event = new Event();
         $this->assertFalse($event->publish());
     }
-}
 
+    public function testMultipleHandlers()
+    {
+        $handlers = array(
+            $this->setupMockHandler(),
+            $this->setupMockHandler(),
+            );
+
+        $event = new Event($handlers);
+        $this->assertTrue($event->publish());
+    }
+}

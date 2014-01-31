@@ -1,10 +1,8 @@
 <?php
 namespace Graze\Monolog\Handler;
 
-use Mockery as m;
 use Graze\Monolog\Handler\DynamoDbEventHandler;
 use \Monolog\TestCase;
-
 
 class DynamoDbEventHandlerTest extends TestCase
 {
@@ -21,7 +19,7 @@ class DynamoDbEventHandlerTest extends TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf('Graze\Monolog\Handler\DynamoDbEventHandler', new DynamoDbEventHandler($this->client, 'foo', array('bar')));
+        $this->assertInstanceOf('Graze\Monolog\Handler\DynamoDbEventHandler', new DynamoDbEventHandler($this->client, 'foo'));
     }
 
     public function testInterface()

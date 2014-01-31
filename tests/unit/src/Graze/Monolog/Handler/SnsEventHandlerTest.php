@@ -1,7 +1,6 @@
 <?php
 namespace Graze\Monolog\Handler;
 
-use Mockery as m;
 use Graze\Monolog\Handler\SnsEventHandler;
 use Monolog\TestCase;
 
