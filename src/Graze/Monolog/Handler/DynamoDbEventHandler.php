@@ -12,10 +12,18 @@
  */
 namespace Graze\Monolog\Handler;
 
-use Graze\Monolog\Handler\EventHandlerTrait;
 use Monolog\Handler\DynamoDbHandler;
 
 class DynamoDbEventHandler extends DynamoDbHandler
 {
-    use EventHandlerTrait;
+    /**
+     * Event handlers handle all events by default
+     *
+     * @param array $record
+     * @return boolean always returns true
+     */
+    public function isHandling(array $record)
+    {
+        return true;
+    }
 }

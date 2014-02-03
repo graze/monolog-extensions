@@ -83,7 +83,7 @@ class EventTest extends TestCase
         $handlers = array(
             $this->setupMockHandler(),
             $this->setupMockHandler(),
-            );
+        );
 
         $event = new Event($handlers);
         $this->assertTrue($event->publish());

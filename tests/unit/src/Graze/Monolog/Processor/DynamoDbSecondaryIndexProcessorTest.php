@@ -35,7 +35,6 @@ class DynamoDbSecondaryIndexProcessorTest extends TestCase
         $this->assertEquals($datetime, $record['foo']);
         $this->assertArrayHasKey('bar', $record);
         $this->assertEquals('sandy', $record['bar']);
-
     }
 
     public function testProcessorNoOverwrite()
@@ -60,5 +59,4 @@ class DynamoDbSecondaryIndexProcessorTest extends TestCase
         $this->assertEquals($timestamp, $record['timestamp']);
         $this->assertEquals($identifier, $record['eventIdentifier']);
     }
-
 }

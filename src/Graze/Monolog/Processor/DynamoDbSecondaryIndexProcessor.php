@@ -31,7 +31,6 @@ class DynamoDbSecondaryIndexProcessor
      * Sets up secondary indexes for dynamodb table
      *
      * @param array $record
-     * @return array $updated
      */
     public function __invoke(array $record)
     {
@@ -43,6 +42,9 @@ class DynamoDbSecondaryIndexProcessor
      * returns an array of secondary indexes as key-value pairs that exist in $record
      *
      * @param array $record
+     * @param array $keys
+     * @param  array &$foundKeys
+     * @return array $foundKeys
      */
     private function retrieveSecondaryIndexes(array $record, array $keys, array &$foundKeys = array())
     {

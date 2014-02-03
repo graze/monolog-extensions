@@ -15,13 +15,10 @@ namespace Graze\Monolog\Handler;
 use Aws\Common\Aws;
 use Aws\Sns\SnsClient;
 use Graze\Monolog\Formatter\JsonDateAwareFormatter;
-use Graze\Monolog\Handler\EventHandler;
 use Monolog\Handler\AbstractProcessingHandler;
 
 class SnsEventHandler extends AbstractProcessingHandler
 {
-    use EventHandlerTrait;
-
     const DATE_FORMAT = 'Y-m-d\TH:i:s.uO';
 
     /**
@@ -40,6 +37,16 @@ class SnsEventHandler extends AbstractProcessingHandler
         parent::__construct();
     }
 
+    /**
+     * Event handlers handle all events by default
+     *
+     * @param array $record
+     * @return boolean always returns true
+     */
+    public function isHandling(array $record)
+    {
+        return true;
+    }
 
     /**
      * {@inheritdoc}

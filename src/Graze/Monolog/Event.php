@@ -28,11 +28,6 @@ class Event
     private $handlers;
 
     /**
-     * @var \DateTimeZone
-     */
-    protected static $timezone;
-
-    /**
      * @param array $handlers
      * @return $this
      */
@@ -46,8 +41,6 @@ class Event
             'metadata'        => array(),
 
         );
-
-        return $this;
     }
 
     /**
@@ -112,10 +105,8 @@ class Event
      */
     private function getNow()
     {
-        if (!static::$timezone) {
-            static::$timezone = new DateTimeZone(date_default_timezone_get() ?: 'UTC');
-        }
+        $timezone = new DateTimeZone(date_default_timezone_get() ?: 'UTC');
 
-        return DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), static::$timezone)->setTimezone(static::$timezone);
+        return DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)))->setTimezone($timezone);
     }
 }
