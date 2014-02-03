@@ -1,6 +1,6 @@
 # Monolog Extensions #
 
-**Version:** *1.3.1*<br/>
+**Version:** *1.4.0*<br/>
 **Master build:** [![Master branch build status][travis-master]][travis]<br/>
 **Develop build:** [![Develop branch build status][travis-develop]][travis]
 
@@ -11,7 +11,7 @@ It can be installed in whichever way you prefer, but we recommend [Composer][pac
 ```json
 {
     "require": {
-        "graze/monolog-extensions": "~1.3.1"
+        "graze/monolog-extensions": "~1.4.0"
     }
 }
 ```
