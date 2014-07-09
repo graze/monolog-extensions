@@ -1,6 +1,5 @@
 # Monolog Extensions #
 
-**Version:** *1.4.0*<br/>
 **Master build:** [![Master branch build status][travis-master]][travis]<br/>
 
 This library supplies additional log handlers, formatters and processors for use with [Monolog][monolog].
