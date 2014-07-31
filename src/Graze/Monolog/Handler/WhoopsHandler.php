@@ -24,7 +24,7 @@ use Whoops\Run as WhoopsRun;
  *
  * @author John
  */
-class WhoopsAdapterHandler extends AbstractProcessingHandler
+class WhoopsHandler extends AbstractProcessingHandler
 {
     /**
      * @var WhoopsHandlerInterface
