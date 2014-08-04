@@ -88,6 +88,6 @@ class WhoopsHandler extends AbstractProcessingHandler
         $this->whoopsHandler->setException($exception);
         $this->whoopsHandler->setRun(new WhoopsRun);
         
-        echo $this->whoopsHandler->handle($exception);
+        echo $this->whoopsHandler->handle();
     }
 }
