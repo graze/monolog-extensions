@@ -14,6 +14,7 @@ namespace Graze\Monolog\Handler;
 
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
+use Whoops\Handler\Handler;
 use Whoops\Handler\HandlerInterface as WhoopsHandlerInterface;
 use Whoops\Exception\ErrorException as WhoopsErrorException;
 use Whoops\Exception\Inspector as WhoopsInspector;
@@ -79,13 +80,30 @@ class WhoopsHandler extends AbstractProcessingHandler
      * @param Exception $exception
      */
     protected function writeException(\Exception $exception)
-    {    
+    {
         $whoopsInspector = new WhoopsInspector($exception);
         
         $this->whoopsHandler->setInspector($whoopsInspector);
         $this->whoopsHandler->setException($exception);
         $this->whoopsHandler->setRun(new WhoopsRun);
         
-        echo $this->whoopsHandler->handle();
+        $whoopsHandleResponse = $this->whoopsHandler->handle();
+        
+        $this->processWhoopsBuubling($whoopsHandleResponse);
+    }
+    
+    /**
+     * Map Whoops->handle() responses to Monolog bubbling
+     */
+    protected function processWhoopsBuubling($whoopsHandleResponse)
+    {
+        switch ($whoopsHandleResponse) {
+            case Handler::LAST_HANDLER:
+            case Handler::QUIT:
+                // don't call further monolog handlers
+                $this->setBubble(false);
+            case Handler::DONE:
+            default:
+        }
     }
 }
