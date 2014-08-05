@@ -8,8 +8,8 @@ class WhoopsHandlerTest extends TestCase
 {
     public function setUp()
     {
-        if (!class_exists('Whoops\Handler\HandlerInterface', false)) {
-            //$this->markTestSkipped('filp/whoops not installed');
+        if (!interface_exists('Whoops\Handler\HandlerInterface', true)) {
+            $this->markTestSkipped('filp/whoops not installed');
         }
         
         $this->handlerWhoops = m::mock('Whoops\Handler\HandlerInterface');
