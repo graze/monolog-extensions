@@ -94,6 +94,8 @@ class WhoopsHandler extends AbstractProcessingHandler
     
     /**
      * Map Whoops->handle() responses to Monolog bubbling
+     *
+     * @param int $whoopsHandleResponse response as returned from Whoops\Handler\Handler::handle()
      */
     protected function processWhoopsBuubling($whoopsHandleResponse)
     {
@@ -102,8 +104,6 @@ class WhoopsHandler extends AbstractProcessingHandler
             case Handler::QUIT:
                 // don't call further monolog handlers
                 $this->setBubble(false);
-            case Handler::DONE:
-            default:
         }
     }
 }
