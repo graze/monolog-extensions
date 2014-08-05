@@ -54,8 +54,6 @@ class WhoopsHandler extends AbstractProcessingHandler
             $this->writeException($context['exception']);
         } elseif (isset($context['file']) && $context['line']) {
             $this->writeError($record);
-        } else {
-            // whoops only deals with Errors and Exceptions, no other logging please
         }
     }
 
