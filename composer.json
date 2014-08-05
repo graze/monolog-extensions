@@ -22,10 +22,12 @@
         "aws/aws-sdk-php": "~2.4",
         "mockery/mockery": "~0.9",
         "phpunit/phpunit": "~4.0",
-        "mindscape/raygun4php": "dev-master"
+        "mindscape/raygun4php": "dev-master",
+        "filp/whoops": "~1.0"
     },
     "suggest": {
         "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
-        "mindscape/raygun4php": "Write records to Raygun.io"
+        "mindscape/raygun4php": "Write records to Raygun.io",
+        "filp/whoops": "Handle logs with Whoops handlers"
     }
 }
