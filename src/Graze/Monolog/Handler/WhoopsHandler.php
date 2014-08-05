@@ -89,7 +89,7 @@ class WhoopsHandler extends AbstractProcessingHandler
         
         $whoopsHandleResponse = $this->whoopsHandler->handle();
         
-        $this->processWhoopsBuubling($whoopsHandleResponse);
+        $this->processWhoopsBubbling($whoopsHandleResponse);
     }
     
     /**
@@ -97,7 +97,7 @@ class WhoopsHandler extends AbstractProcessingHandler
      *
      * @param int $whoopsHandleResponse response as returned from Whoops\Handler\Handler::handle()
      */
-    protected function processWhoopsBuubling($whoopsHandleResponse)
+    protected function processWhoopsBubbling($whoopsHandleResponse)
     {
         switch ($whoopsHandleResponse) {
             case Handler::LAST_HANDLER:
