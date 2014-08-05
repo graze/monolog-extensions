@@ -9,14 +9,10 @@ It can be installed in whichever way you prefer, but we recommend [Composer][pac
 ```json
 {
     "require": {
-        "graze/monolog-extensions": "~1.5.0"
+        "graze/monolog-extensions": "*"
     }
 }
 ```
-
-The extensions included with this library are:
- - ErrorHandlerBuilder
- - RaygunHandler
 
 ### ErrorHandlerBuilder usage
 ```php
