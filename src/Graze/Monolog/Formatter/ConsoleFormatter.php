@@ -33,17 +33,17 @@ class ConsoleFormatter extends NormalizerFormatter
         Logger::ALERT       => ['1;37','45'], // White/Purple
         Logger::EMERGENCY   => ['1;37','41'], // White/Red
      );
-     
+
      /**
       * @var array
       */
      private $columnLengthMax = [];
-     
+
      /**
       * @var array
       */
      private $rows = [];
-     
+
     /**
      * @param string $dateFormat The format of the timestamp: one supported by DateTime::format
      *
@@ -53,28 +53,7 @@ class ConsoleFormatter extends NormalizerFormatter
     {
         parent::__construct($dateFormat);
     }
-    
-    /**
-     * @param string $columnString,... unlimited OPTIONAL
-     *
-     * @return void
-     */
-    protected function addRow()
-    {
-        $arguments = func_get_args();
-        
-        // store the longest column so we can pad out to it on render
-        foreach ($arguments as $key => $value) {
-            $columnLength = strlen($value);
-            
-            if (!isset($this->columnLengthMax[$key]) || $columnLength > $this->columnLengthMax[$key]) {
-                $this->columnLengthMax[$key] = $columnLength;
-            }
-        }
-        
-        $this->rows[] = $arguments;
-    }
-    
+
     /**
      * Formats a log record.
      *
@@ -88,12 +67,12 @@ class ConsoleFormatter extends NormalizerFormatter
         $this->addRow('Message', (string) $record['message']);
         $this->addRow('Time', $record['datetime']->format($this->dateFormat));
         $this->addRow('Channel', $record['channel']);
-        
+
         if (isset($record['context']['file'])) {
             $this->addRow('File', $record['context']['file']);
             $this->addRow('Line', $record['context']['line']);
         }
-        
+
         if (isset($record['context']['exception'])) {
             $trace = explode(PHP_EOL, $record['context']['exception']->getTraceAsString());
             $this->addRow('Trace', array_shift($trace));
@@ -101,10 +80,31 @@ class ConsoleFormatter extends NormalizerFormatter
                 $this->addRow('', $row);
             }
         }
-        
+
         return $this->render($this->getColoursByLogLevel($record['level']));
     }
-    
+
+    /**
+     * @param string $columnString,... unlimited OPTIONAL
+     *
+     * @return void
+     */
+    protected function addRow()
+    {
+        $arguments = func_get_args();
+
+        // store the longest column so we can pad out to it on render
+        foreach ($arguments as $key => $value) {
+            $columnLength = strlen($value);
+
+            if (!isset($this->columnLengthMax[$key]) || $columnLength > $this->columnLengthMax[$key]) {
+                $this->columnLengthMax[$key] = $columnLength;
+            }
+        }
+
+        $this->rows[] = $arguments;
+    }
+
     /**
      * @param array $colours
      *
@@ -113,27 +113,30 @@ class ConsoleFormatter extends NormalizerFormatter
     protected function render($colours)
     {
         $separator = '+';
-        
+
         foreach ($this->columnLengthMax as $columnLength) {
             $separator .= str_repeat('-', $columnLength + 2) . '+';
         }
-        
+
         $output = $separator;
-        
+
         foreach ($this->rows as $row) {
             $output .= PHP_EOL . '|';
-            
+
             foreach ($this->columnLengthMax as $key => $null) {
                 $cellContent = isset($row[$key]) ? $row[$key]: '';
-                
+
                 $output .= ' ' . str_pad($cellContent, $this->columnLengthMax[$key])  . ' |';
             }
         }
-        
+
+        // flush rows
+        $this->rows = [];
+
         // Create the coloured string
         return "\n\033[{$colours[0]}m\033[{$colours[1]}m" . $output . PHP_EOL . $separator . PHP_EOL . "\033[0m\n";
     }
-    
+
     /**
      * @param $logLevel
      *
