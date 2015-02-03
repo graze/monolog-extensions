@@ -1,5 +1,3 @@
-.vagrant
-composer.lock
-phpunit.xml
-tests/report
-vendor
+.vagrant/
+tests/report/
+vendor/

@@ -1,13 +1,14 @@
 language: php
 
-php: [5.3, 5.4, 5.5]
+sudo: false
 
-before_script:
-  - php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
-  - php composer.phar install --dev --prefer-source
+php:
+  - 5.4
+  - 5.5
+  - 5.6
 
-script: make tests
+install:
+  - travis_retry composer install --no-interaction --optimize-autoloader --prefer-source
 
-notifications:
-  email:
-    - andrew.lawson@graze.com
+script:
+  - make tests
