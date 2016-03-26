@@ -38,8 +38,8 @@ class RaygunHandlerTest extends TestCase
             array(
                 'file' => 'bar',
                 'line' => 1,
-                'tags' => ['foo', 'bar'],
-                'custom_data' => ['bar' => 'baz'],
+                'tags' => array('foo', 'bar'),
+                'custom_data' => array('bar' => 'baz'),
                 'timestamp' => 1234567890,
             )
         );
@@ -55,7 +55,7 @@ class RaygunHandlerTest extends TestCase
         $this->client
              ->shouldReceive('SendError')
              ->once()
-             ->with(0, 'foo', 'bar', 1, ['foo', 'bar'], ['bar' => 'baz'], 1234567890);
+             ->with(0, 'foo', 'bar', 1, array('foo', 'bar'), array('bar' => 'baz'), 1234567890);
 
         $handler->handle($record);
     }
@@ -67,8 +67,8 @@ class RaygunHandlerTest extends TestCase
             'foo',
             array(
                 'exception' => $exception,
-                'tags' => ['foo', 'bar'],
-                'custom_data' => ['bar' => 'baz'],
+                'tags' => array('foo', 'bar'),
+                'custom_data' => array('bar' => 'baz'),
                 'timestamp' => 1234567890,
             )
         );
@@ -84,7 +84,7 @@ class RaygunHandlerTest extends TestCase
         $this->client
              ->shouldReceive('SendException')
              ->once()
-             ->with($exception, ['foo', 'bar'], ['bar' => 'baz'], 1234567890);
+             ->with($exception, array('foo', 'bar'), array('bar' => 'baz'), 1234567890);
 
         $handler->handle($record);
     }
