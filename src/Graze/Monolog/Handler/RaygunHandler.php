@@ -42,7 +42,10 @@ class RaygunHandler extends AbstractProcessingHandler
     protected function write(array $record)
     {
         $context = $record['context'];
-        $tags = $customData = $timestamp = null;
+        $tags = array();
+        $customData = array();
+        $timestamp = null;
+        
         if (array_key_exists('tags', $context) && is_array($context['tags'])) {
             $tags = $context['tags'];
         }
@@ -64,8 +67,11 @@ class RaygunHandler extends AbstractProcessingHandler
 
     /**
      * @param array $record
+     * @param array $tags
+     * @param array $customData
+     * @param int|float $timestamp
      */
-    protected function writeError(array $record, $tags = null, $customData = null, $timestamp = null)
+    protected function writeError(array $record, array $tags, array $customData, $timestamp = null)
     {
         $context = $record['context'];
         $this->client->SendError(
@@ -81,8 +87,11 @@ class RaygunHandler extends AbstractProcessingHandler
 
     /**
      * @param array $record
+     * @param array $tags
+     * @param array $customData
+     * @param int|float $timestamp
      */
-    protected function writeException(array $record, $tags = null, $customData = null, $timestamp = null)
+    protected function writeException(array $record, array $tags, array $customData, $timestamp = null)
     {
         $this->client->SendException($record['context']['exception'], $tags, $customData, $timestamp);
     }
