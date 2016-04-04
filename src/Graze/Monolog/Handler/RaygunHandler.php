@@ -12,6 +12,7 @@
  */
 namespace Graze\Monolog\Handler;
 
+use Graze\Monolog\Formatter\RaygunFormatter;
 use Monolog\Formatter\NormalizerFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -41,26 +42,22 @@ class RaygunHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        $tags = array();
-        $timestamp = null;
-        foreach (array('extra', 'context') as $source) {
-            if (array_key_exists('tags', $record[$source]) && is_array($record[$source]['tags'])) {
-                $tags = array_merge($tags, $record[$source]['tags']);
-            }
-            if (array_key_exists('timestamp', $record[$source]) && is_numeric($record[$source]['timestamp'])) {
-                $timestamp = $record[$source]['timestamp'];
-            }
-            unset($record[$source]['tags'], $record[$source]['timestamp']);
-        }
-
         $context = $record['context'];
-        $extra = $record['extra'];
-        $customData = array_merge($extra, array_diff_key($context, array_flip(array('file', 'line', 'exception'))));
 
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
-            $this->writeException($record, $tags, $customData, $timestamp);
+            $this->writeException(
+                $record['formatted'], 
+                $record['formatted']['tags'], 
+                $record['formatted']['custom_data'], 
+                $record['formatted']['timestamp']
+            );
         } elseif (isset($context['file']) && $context['line']) {
-            $this->writeError($record, $tags, $customData, $timestamp);
+            $this->writeError(
+                $record['formatted'], 
+                $record['formatted']['tags'], 
+                $record['formatted']['custom_data'], 
+                $record['formatted']['timestamp']
+            );
         } else {
             throw new \InvalidArgumentException('Invalid record given.');
         }
@@ -102,7 +99,7 @@ class RaygunHandler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter()
     {
-        return new NormalizerFormatter();
+        return new RaygunFormatter();
     }
 }
 

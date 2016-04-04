@@ -37,11 +37,18 @@ class RaygunHandlerTest extends TestCase
             'foo', array(
                 'file' => 'bar',
                 'line' => 1,
-                'tags' => array('foo'),
-                'timestamp' => 1234567890,
             )
         );
+        $record['context']['tags'] = array('foo');
+        $record['context']['timestamp'] = 1234567890;
         $record['extra'] = array('bar' => 'baz', 'tags' => array('bar'));
+        $formatted = array_merge($record,
+            array(
+                'tags' => array('foo', 'bar'),
+                'timestamp' => 1234567890,
+                'custom_data' => array('bar' => 'baz')
+            )
+        );
 
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         $handler = new RaygunHandler($this->client);
@@ -51,11 +58,11 @@ class RaygunHandlerTest extends TestCase
              ->shouldReceive('format')
              ->once()
              ->with($record)
-             ->andReturn(array());
+             ->andReturn($formatted);
         $this->client
              ->shouldReceive('SendError')
              ->once()
-             ->with(0, 'foo', 'bar', 1, array('bar', 'foo'), array('bar' => 'baz'), 1234567890);
+             ->with(0, 'foo', 'bar', 1, array('foo', 'bar'), array('bar' => 'baz'), 1234567890);
 
         $handler->handle($record);
     }
@@ -66,6 +73,13 @@ class RaygunHandlerTest extends TestCase
         $record = $this->getRecord(300, 'foo', array('exception' => $exception));
         $record['extra'] = array('bar' => 'baz', 'tags' => array('foo', 'bar'));
         $record['extra']['timestamp'] = 1234567890;
+        $formatted = array_merge($record,
+            array(
+                'tags' => array('foo', 'bar'),
+                'timestamp' => 1234567890,
+                'custom_data' => array('bar' => 'baz')
+            )
+        );
 
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         $handler = new RaygunHandler($this->client);
@@ -75,7 +89,7 @@ class RaygunHandlerTest extends TestCase
              ->shouldReceive('format')
              ->once()
              ->with($record)
-             ->andReturn(array());
+             ->andReturn($formatted);
         $this->client
              ->shouldReceive('SendException')
              ->once()
