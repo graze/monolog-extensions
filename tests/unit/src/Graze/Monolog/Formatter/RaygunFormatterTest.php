@@ -6,69 +6,83 @@ use Monolog\TestCase;
 
 class RaygunFormatterTest extends TestCase
 {
-    public function logData()
+
+    public function testFormat()
     {
-        return array(
-            array(
-                array_merge_recursive(
-                    $baseRecord = $this->getRecord(300,
-                        'foo', array(
-                            'file' => 'bar',
-                            'line' => 1,
-                        )
-                    ),
-                    array(
-                        'context' => array(
-                            'bar' => 'baz',
-                            'timestamp' => 1234567890,
-                            'tags' => array('foo'),
-                        ),
-                        'extra' => array(
-                            'baz' => 'qux',
-                            'tags' => array('bar'),
-                        )
-                    )
-                ),
-                array_merge(
-                    $baseRecord,
-                    array(
-                        'tags' => array('bar', 'foo'),
-                        'timestamp' => 1234567890,
-                        'custom_data' => array('bar' => 'baz', 'baz' => 'qux'),
-                    )
-                )
-            ),
-            array(
-                array_merge_recursive(
-                    $baseRecord = $this->getRecord(300, 'foo', array('exception' => new \Exception('foo'))),
-                    array(
-                        'extra' => array(
-                            'bar' => 'baz',
-                            'tags' => array('foo', 'bar'),
-                            'timestamp' => 1234567890,
-                        )
-                    )
-                ),
-                array_merge(
-                    $baseRecord,
-                    array(
-                        'tags' => array('foo', 'bar'),
-                        'timestamp' => 1234567890,
-                        'custom_data' => array('bar' => 'baz'),
-                    )
-                )
+        $input = array(
+            'level_name' => 'WARNING',
+            'channel' => 'test',
+            'message' => 'foo',
+            'datetime' => new \DateTime,
+            'extra' => array('baz' => 'qux', 'tags' => array('bar')),
+            'context' => array(
+                'file' => 'bar',
+                'line' => 1,
+                'bar' => 'baz',
+                'timestamp' => 1234567890,
+                'tags' => array('foo'),
             ),
         );
+        $expected = array(
+            'level_name' => 'WARNING',
+            'channel' => 'test',
+            'message' => 'foo',
+            'datetime' => date('Y-m-d'),
+            'context' => array(
+                'file' => 'bar',
+                'line' => 1,
+            ),
+            'extra' => array(),
+            'tags' => array('bar', 'foo'),
+            'timestamp' => 1234567890,
+            'custom_data' => array('bar' => 'baz', 'baz' => 'qux'),
+        );
+
+        $formatter = new RaygunFormatter('Y-m-d');
+        $this->assertEquals($expected, $formatter->format($input));
     }
 
-    /**
-     * @dataProvider logData
-     * @param array $input
-     * @param array $expected
-     */
-    public function testFormat(array $input, array $expected)
+    public function testFormatException()
     {
-        $formatter = new RaygunFormatter();
-        $this->assertEquals($expected, $formatter->format($input));
+        $formatter = new RaygunFormatter('Y-m-d');
+        $ex = new \Exception('foo');
+        $someClass = new \stdClass();
+        $someClass->foo = 'bar';
+        $input = array(
+            'level_name' => 'WARNING',
+            'channel' => 'test',
+            'message' => 'foo',
+            'datetime' => new \DateTime,
+            'extra' => array(
+                'bar' => 'baz',
+                'tags' => array('foo', 'bar'),
+                'timestamp' => 1234567890,
+                'someClass' => $someClass
+            ),
+            'context' =>  array(
+                'exception' => $ex,
+            ),
+        );
+        $formatted = $formatter->format($input);
+        unset($formatted['context']['exception']['trace'], $formatted['context']['exception']['previous']);
+
+        $this->assertEquals(array(
+                'level_name' => 'WARNING',
+                'channel' => 'test',
+                'message' => 'foo',
+                'datetime' => date('Y-m-d'),
+                'context' =>  array(
+                    'exception' => array(
+                        'class' => get_class($ex),
+                        'message' => $ex->getMessage(),
+                        'code' => $ex->getCode(),
+                        'file' => $ex->getFile().':'.$ex->getLine(),
+                    )
+                ),
+                'extra' => array(),
+                'tags' => array('foo', 'bar'),
+                'timestamp' => 1234567890,
+                'custom_data' => array('bar' => 'baz', 'someClass' => '[object] (stdClass: {"foo":"bar"})'),
+            ), $formatted);
     }
 }

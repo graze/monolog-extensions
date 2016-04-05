@@ -21,6 +21,8 @@ class RaygunFormatter extends NormalizerFormatter
      */
     public function format(array $record)
     {
+        $record = parent::format($record);
+
         $record['tags'] = array();
         $record['custom_data'] = array();
         $record['timestamp'] = null;

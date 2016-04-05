@@ -80,6 +80,12 @@ class RaygunHandlerTest extends TestCase
                 'custom_data' => array('bar' => 'baz')
             )
         );
+        $formatted['context']['exception'] = array(
+            'class' => get_class($exception),
+            'message' => $exception->getMessage(),
+            'code' => $exception->getCode(),
+            'file' => $exception->getFile().':'.$exception->getLine(),
+        );
 
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         $handler = new RaygunHandler($this->client);
