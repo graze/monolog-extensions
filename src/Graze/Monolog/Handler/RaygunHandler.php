@@ -43,7 +43,12 @@ class RaygunHandler extends AbstractProcessingHandler
     {
         $context = $record['context'];
 
-        if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+        if (isset($context['exception']) &&
+            (
+                $context['exception'] instanceof \Exception ||
+                (PHP_VERSION_ID > 70000 && $context['exception'] instanceof \Throwable)
+            )
+        ) {
             $this->writeException(
                 $record['formatted'],
                 $record['formatted']['tags'],
