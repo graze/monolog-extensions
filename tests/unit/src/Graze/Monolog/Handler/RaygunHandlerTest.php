@@ -33,7 +33,23 @@ class RaygunHandlerTest extends TestCase
 
     public function testHandleError()
     {
-        $record = $this->getRecord(300, 'foo', array('file' => 'bar', 'line' => 1));
+        $record = $this->getRecord(300,
+            'foo', array(
+                'file' => 'bar',
+                'line' => 1,
+            )
+        );
+        $record['context']['tags'] = array('foo');
+        $record['context']['timestamp'] = 1234567890;
+        $record['extra'] = array('bar' => 'baz', 'tags' => array('bar'));
+        $formatted = array_merge($record,
+            array(
+                'tags' => array('foo', 'bar'),
+                'timestamp' => 1234567890,
+                'custom_data' => array('bar' => 'baz')
+            )
+        );
+
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         $handler = new RaygunHandler($this->client);
         $handler->setFormatter($formatter);
@@ -42,11 +58,11 @@ class RaygunHandlerTest extends TestCase
              ->shouldReceive('format')
              ->once()
              ->with($record)
-             ->andReturn(array());
+             ->andReturn($formatted);
         $this->client
              ->shouldReceive('SendError')
              ->once()
-             ->with(0, 'foo', 'bar', 1);
+             ->with(0, 'foo', 'bar', 1, array('foo', 'bar'), array('bar' => 'baz'), 1234567890);
 
         $handler->handle($record);
     }
@@ -55,6 +71,16 @@ class RaygunHandlerTest extends TestCase
     {
         $exception = new \Exception('foo');
         $record = $this->getRecord(300, 'foo', array('exception' => $exception));
+        $record['extra'] = array('bar' => 'baz', 'tags' => array('foo', 'bar'));
+        $record['extra']['timestamp'] = 1234567890;
+        $formatted = array_merge($record,
+            array(
+                'tags' => array('foo', 'bar'),
+                'timestamp' => 1234567890,
+                'custom_data' => array('bar' => 'baz')
+            )
+        );
+
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         $handler = new RaygunHandler($this->client);
         $handler->setFormatter($formatter);
@@ -63,11 +89,11 @@ class RaygunHandlerTest extends TestCase
              ->shouldReceive('format')
              ->once()
              ->with($record)
-             ->andReturn(array());
+             ->andReturn($formatted);
         $this->client
              ->shouldReceive('SendException')
              ->once()
-             ->with($exception);
+             ->with($exception, array('foo', 'bar'), array('bar' => 'baz'), 1234567890);
 
         $handler->handle($record);
     }

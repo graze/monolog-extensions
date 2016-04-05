@@ -12,6 +12,7 @@
  */
 namespace Graze\Monolog\Handler;
 
+use Graze\Monolog\Formatter\RaygunFormatter;
 use Monolog\Formatter\NormalizerFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -44,9 +45,19 @@ class RaygunHandler extends AbstractProcessingHandler
         $context = $record['context'];
 
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
-            $this->writeException($record);
+            $this->writeException(
+                $record['formatted'], 
+                $record['formatted']['tags'], 
+                $record['formatted']['custom_data'], 
+                $record['formatted']['timestamp']
+            );
         } elseif (isset($context['file']) && $context['line']) {
-            $this->writeError($record);
+            $this->writeError(
+                $record['formatted'], 
+                $record['formatted']['tags'], 
+                $record['formatted']['custom_data'], 
+                $record['formatted']['timestamp']
+            );
         } else {
             throw new \InvalidArgumentException('Invalid record given.');
         }
@@ -54,24 +65,33 @@ class RaygunHandler extends AbstractProcessingHandler
 
     /**
      * @param array $record
+     * @param array $tags
+     * @param array $customData
+     * @param int|float $timestamp
      */
-    protected function writeError(array $record)
+    protected function writeError(array $record, array $tags, array $customData, $timestamp = null)
     {
         $context = $record['context'];
         $this->client->SendError(
             0,
             $record['message'],
             $context['file'],
-            $context['line']
+            $context['line'],
+            $tags,
+            $customData,
+            $timestamp
         );
     }
 
     /**
      * @param array $record
+     * @param array $tags
+     * @param array $customData
+     * @param int|float $timestamp
      */
-    protected function writeException(array $record)
+    protected function writeException(array $record, array $tags, array $customData, $timestamp = null)
     {
-        $this->client->SendException($record['context']['exception']);
+        $this->client->SendException($record['context']['exception'], $tags, $customData, $timestamp);
     }
 
     /**
@@ -79,6 +99,7 @@ class RaygunHandler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter()
     {
-        return new NormalizerFormatter();
+        return new RaygunFormatter();
     }
 }
+
