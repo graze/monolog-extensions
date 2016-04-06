@@ -13,7 +13,6 @@
 namespace Graze\Monolog\Handler;
 
 use Graze\Monolog\Formatter\RaygunFormatter;
-use Monolog\Formatter\NormalizerFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Raygun4php\RaygunClient;
@@ -27,8 +26,8 @@ class RaygunHandler extends AbstractProcessingHandler
 
     /**
      * @param RaygunClient $client
-     * @param integer $level
-     * @param boolean $bubble
+     * @param int $level
+     * @param bool $bubble
      */
     public function __construct(RaygunClient $client, $level = Logger::DEBUG, $bubble = true)
     {
@@ -46,16 +45,16 @@ class RaygunHandler extends AbstractProcessingHandler
 
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
             $this->writeException(
-                $record['formatted'], 
-                $record['formatted']['tags'], 
-                $record['formatted']['custom_data'], 
+                $record['formatted'],
+                $record['formatted']['tags'],
+                $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
         } elseif (isset($context['file']) && $context['line']) {
             $this->writeError(
-                $record['formatted'], 
-                $record['formatted']['tags'], 
-                $record['formatted']['custom_data'], 
+                $record['formatted'],
+                $record['formatted']['tags'],
+                $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
         } else {
@@ -69,7 +68,7 @@ class RaygunHandler extends AbstractProcessingHandler
      * @param array $customData
      * @param int|float $timestamp
      */
-    protected function writeError(array $record, array $tags, array $customData, $timestamp = null)
+    protected function writeError(array $record, array $tags = array(), array $customData = array(), $timestamp = null)
     {
         $context = $record['context'];
         $this->client->SendError(
@@ -89,13 +88,13 @@ class RaygunHandler extends AbstractProcessingHandler
      * @param array $customData
      * @param int|float $timestamp
      */
-    protected function writeException(array $record, array $tags, array $customData, $timestamp = null)
+    protected function writeException(array $record, array $tags = array(), array $customData = array(), $timestamp = null)
     {
         $this->client->SendException($record['context']['exception'], $tags, $customData, $timestamp);
     }
 
     /**
-     * @return FormatterInterface
+     * @return \Monolog\Formatter\FormatterInterface
      */
     protected function getDefaultFormatter()
     {
