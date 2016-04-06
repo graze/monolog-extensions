@@ -45,7 +45,7 @@ class RaygunHandler extends AbstractProcessingHandler
 
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
             $this->writeException(
-                $record['formatted'],
+                $record,
                 $record['formatted']['tags'],
                 $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
