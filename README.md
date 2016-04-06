@@ -1,17 +1,21 @@
 # Monolog Extensions #
 
-**Master build:** [![Master branch build status][travis-master]][travis]<br/>
+[![Latest Stable Version](http://img.shields.io/packagist/v/graze/monolog-extensions.svg?style=flat)][packagist]
+[![Build Status](http://img.shields.io/travis/graze/monolog-extensions/master.svg?style=flat)][travis]
+[![Minimum PHP Version](http://img.shields.io/badge/php-~5.4-8892BF.svg?style=flat)][php]
+
+[travis]:    https://travis-ci.org/graze/monolog-extensions
+[packagist]: https://packagist.org/packages/graze/monolog-extensions
+[php]:       https://php.net/
 
 This library supplies additional log handlers, formatters and processors for use with [Monolog][monolog].
 The intention is to make use of the library internally with the aim to eventually submit relevant parts to Monolog
-core.<br/>
+core.
+
 It can be installed in whichever way you prefer, but we recommend [Composer][packagist].
-```json
-{
-    "require": {
-        "graze/monolog-extensions": "*"
-    }
-}
+
+```bash
+$ composer require graze/monolog-extensions
 ```
 
 ### ErrorHandlerBuilder usage
