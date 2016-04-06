@@ -103,4 +103,37 @@ class RaygunHandlerTest extends TestCase
 
         $handler->handle($record);
     }
+
+    /**
+     * @requires PHP 7
+     */
+    public function testHandleThrowable()
+    {
+        $exception = new \TypeError('foo');
+        $record = $this->getRecord(300, 'foo', array('exception' => $exception));
+        $record['context']['tags'] = array('foo');
+        $formatted = array_merge($record,
+            array(
+                'tags' => array('foo'),
+                'custom_data' => array(),
+                'timestamp' => null,
+            )
+        );
+
+        $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
+        $handler = new RaygunHandler($this->client);
+        $handler->setFormatter($formatter);
+
+        $formatter
+            ->shouldReceive('format')
+            ->once()
+            ->with($record)
+            ->andReturn($formatted);
+        $this->client
+            ->shouldReceive('SendException')
+            ->once()
+            ->with($exception, array('foo'), array(), null);
+
+        $handler->handle($record);
+    }
 }
