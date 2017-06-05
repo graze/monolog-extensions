@@ -64,16 +64,20 @@ class RaygunHandler extends AbstractProcessingHandler
                 $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
-        } elseif (isset($context['file']) && $context['line']) {
+            return;
+        }
+
+        if (isset($context['file']) && $context['line']) {
             $this->writeError(
                 $record['formatted'],
                 $record['formatted']['tags'],
                 $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
-        } else {
-            throw new \InvalidArgumentException('Invalid record given.');
+            return;
         }
+
+        throw new \InvalidArgumentException('attempt to handle unsupported record type');
     }
 
     /**
@@ -115,4 +119,3 @@ class RaygunHandler extends AbstractProcessingHandler
         return new RaygunFormatter();
     }
 }
-
