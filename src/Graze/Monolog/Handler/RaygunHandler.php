@@ -17,6 +17,9 @@ use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Raygun4php\RaygunClient;
 
+/**
+ * RaygunHandler for Raygun Client. Only supports Level >= NOTICE.
+ */
 class RaygunHandler extends AbstractProcessingHandler
 {
     /**
@@ -32,8 +35,15 @@ class RaygunHandler extends AbstractProcessingHandler
     public function __construct(RaygunClient $client, $level = Logger::DEBUG, $bubble = true)
     {
         $this->client = $client;
-
         parent::__construct($level, $bubble);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isHandling(array $record)
+    {
+        return $record['level'] >= Logger::NOTICE && $record['level'] >= $this->level;
     }
 
     /**
@@ -42,7 +52,6 @@ class RaygunHandler extends AbstractProcessingHandler
     protected function write(array $record)
     {
         $context = $record['context'];
-
         if (isset($context['exception']) &&
             (
                 $context['exception'] instanceof \Exception ||
@@ -55,16 +64,20 @@ class RaygunHandler extends AbstractProcessingHandler
                 $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
-        } elseif (isset($context['file']) && $context['line']) {
+            return;
+        }
+
+        if (isset($context['file']) && $context['line']) {
             $this->writeError(
                 $record['formatted'],
                 $record['formatted']['tags'],
                 $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
-        } else {
-            throw new \InvalidArgumentException('Invalid record given.');
+            return;
         }
+
+        throw new \InvalidArgumentException('attempt to handle unsupported record type');
     }
 
     /**
@@ -106,4 +119,3 @@ class RaygunHandler extends AbstractProcessingHandler
         return new RaygunFormatter();
     }
 }
-

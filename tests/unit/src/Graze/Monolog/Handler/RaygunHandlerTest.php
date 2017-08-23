@@ -136,4 +136,32 @@ class RaygunHandlerTest extends TestCase
 
         $handler->handle($record);
     }
+
+    /**
+     * @dataProvider dataProviderIsHandling
+     * @param int $handlerLevel
+     * @param int $recordLevel
+     * @param bool $isHandlingExpected
+     */
+    public function testIsHandling($handlerLevel, $recordLevel, $isHandlingExpected)
+    {
+        $handler = new RaygunHandler($this->client, $handlerLevel);
+        $record = ['level' => $recordLevel];
+
+        $this->assertEquals($isHandlingExpected, $handler->isHandling($record));
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderIsHandling()
+    {   // handler level, record level, isHandling expected
+        return [
+            [100, 100, false], // DEBUG
+            [100, 200, false], // INFO
+            [100, 250, true], // NOTICE
+            [100, 300, true], // WARNING
+            [300, 250, false], // NOTICE
+        ];
+    }
 }
