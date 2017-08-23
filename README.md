@@ -2,7 +2,7 @@
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/graze/monolog-extensions.svg?style=flat)][packagist]
 [![Build Status](http://img.shields.io/travis/graze/monolog-extensions/master.svg?style=flat)][travis]
-[![Minimum PHP Version](http://img.shields.io/badge/php-~5.4-8892BF.svg?style=flat)][php]
+[![Minimum PHP Version](http://img.shields.io/badge/php-~5.5-8892BF.svg?style=flat)][php]
 
 [travis]:    https://travis-ci.org/graze/monolog-extensions
 [packagist]: https://packagist.org/packages/graze/monolog-extensions
