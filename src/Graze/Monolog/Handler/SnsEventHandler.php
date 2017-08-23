@@ -12,7 +12,6 @@
  */
 namespace Graze\Monolog\Handler;
 
-use Aws\Common\Aws;
 use Aws\Sns\SnsClient;
 use Graze\Monolog\Formatter\JsonDateAwareFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
@@ -26,12 +25,6 @@ class SnsEventHandler extends AbstractProcessingHandler
      * @param string $topic  aws TopicArn
      */
     public function __construct(SnsClient $client, $topic) {
-        if (!defined('Aws\Common\Aws::VERSION') || version_compare('3.0', Aws::VERSION, '<=')) {
-            throw new \RuntimeException(
-                'The SnsHandler is only known to work with the AWS SDK 2.x releases'
-            );
-        }
-
         $this->client = $client;
         $this->topic = $topic;
         parent::__construct();

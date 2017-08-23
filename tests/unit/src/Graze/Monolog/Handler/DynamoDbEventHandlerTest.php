@@ -42,7 +42,11 @@ class DynamoDbEventHandlerTest extends TestCase
     {
         $record = $this->getRecord();
         $formatter = $this->getMock('Monolog\Formatter\FormatterInterface');
-        $formatted = array('foo' => 1, 'bar' => 2);
+        $raw = ['foo' => 1, 'bar' => 2];
+        $formatted = [
+            'foo' => ['N' => '1'],
+            'bar' => ['N' => '2']
+        ];
         $handler = new DynamoDbEventHandler($this->client, 'foo');
         $handler->setFormatter($formatter);
 
@@ -50,12 +54,7 @@ class DynamoDbEventHandlerTest extends TestCase
              ->expects($this->once())
              ->method('format')
              ->with($record)
-             ->will($this->returnValue($formatted));
-        $this->client
-             ->expects($this->once())
-             ->method('formatAttributes')
-             ->with($this->isType('array'))
-             ->will($this->returnValue($formatted));
+             ->will($this->returnValue($raw));
         $this->client
              ->expects($this->once())
              ->method('__call')

@@ -19,11 +19,11 @@
     },
     "require-dev": {
         "adlawson/timezone": "~1.0",
-        "aws/aws-sdk-php": "~2.4",
-        "mockery/mockery": "~0.9",
-        "phpunit/phpunit": "~4.0",
+        "aws/aws-sdk-php": "^3.0",
+        "filp/whoops": "~1.0",
         "mindscape/raygun4php": "dev-master",
-        "filp/whoops": "~1.0"
+        "mockery/mockery": "~0.9",
+        "phpunit/phpunit": "~4.0"
     },
     "suggest": {
         "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
