@@ -37,6 +37,28 @@ class RaygunHandler extends AbstractProcessingHandler
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isHandling(array $record)
+    {
+        if(parent::isHandling($record)) {
+            $context = $record['context'];
+
+            //Ensure only valid records will be handled and no InvalidArgumentException will be thrown
+            if ((isset($context['exception']) &&
+                    (
+                        $context['exception'] instanceof \Exception ||
+                        (PHP_VERSION_ID > 70000 && $context['exception'] instanceof \Throwable)
+                    )
+                ) || (isset($context['file']) && $context['line'])
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param array $record
      */
     protected function write(array $record)
