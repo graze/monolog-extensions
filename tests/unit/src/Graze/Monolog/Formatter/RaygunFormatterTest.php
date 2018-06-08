@@ -9,34 +9,34 @@ class RaygunFormatterTest extends TestCase
 
     public function testFormat()
     {
-        $input = array(
+        $input = [
             'level_name' => 'WARNING',
             'channel' => 'test',
             'message' => 'foo',
             'datetime' => new \DateTime,
-            'extra' => array('baz' => 'qux', 'tags' => array('bar')),
-            'context' => array(
+            'extra' => ['baz' => 'qux', 'tags' => ['bar']],
+            'context' => [
                 'file' => 'bar',
                 'line' => 1,
                 'bar' => 'baz',
                 'timestamp' => 1234567890,
-                'tags' => array('foo'),
-            ),
-        );
-        $expected = array(
+                'tags' => ['foo'],
+            ],
+        ];
+        $expected = [
             'level_name' => 'WARNING',
             'channel' => 'test',
             'message' => 'foo',
             'datetime' => date('Y-m-d'),
-            'context' => array(
+            'context' => [
                 'file' => 'bar',
                 'line' => 1,
-            ),
-            'extra' => array(),
-            'tags' => array('bar', 'foo'),
+            ],
+            'extra' => [],
+            'tags' => ['bar', 'foo'],
             'timestamp' => 1234567890,
-            'custom_data' => array('bar' => 'baz', 'baz' => 'qux'),
-        );
+            'custom_data' => ['bar' => 'baz', 'baz' => 'qux'],
+        ];
 
         $formatter = new RaygunFormatter('Y-m-d');
         $this->assertEquals($expected, $formatter->format($input));
@@ -48,41 +48,41 @@ class RaygunFormatterTest extends TestCase
         $ex = new \Exception('foo');
         $someClass = new \stdClass();
         $someClass->foo = 'bar';
-        $input = array(
+        $input = [
             'level_name' => 'WARNING',
             'channel' => 'test',
             'message' => 'foo',
             'datetime' => new \DateTime,
-            'extra' => array(
+            'extra' => [
                 'bar' => 'baz',
-                'tags' => array('foo', 'bar'),
+                'tags' => ['foo', 'bar'],
                 'timestamp' => 1234567890,
                 'someClass' => $someClass
-            ),
-            'context' =>  array(
+            ],
+            'context' =>  [
                 'exception' => $ex,
-            ),
-        );
+            ],
+        ];
         $formatted = $formatter->format($input);
         unset($formatted['context']['exception']['trace'], $formatted['context']['exception']['previous']);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
                 'level_name' => 'WARNING',
                 'channel' => 'test',
                 'message' => 'foo',
                 'datetime' => date('Y-m-d'),
-                'context' =>  array(
-                    'exception' => array(
+                'context' =>  [
+                    'exception' => [
                         'class' => get_class($ex),
                         'message' => $ex->getMessage(),
                         'code' => $ex->getCode(),
                         'file' => $ex->getFile().':'.$ex->getLine(),
-                    )
-                ),
-                'extra' => array(),
-                'tags' => array('foo', 'bar'),
+                    ]
+                ],
+                'extra' => [],
+                'tags' => ['foo', 'bar'],
                 'timestamp' => 1234567890,
-                'custom_data' => array('bar' => 'baz', 'someClass' => '[object] (stdClass: {"foo":"bar"})'),
-            ), $formatted);
+                'custom_data' => ['bar' => 'baz', 'someClass' => '[object] (stdClass: {"foo":"bar"})'],
+            ], $formatted);
     }
 }

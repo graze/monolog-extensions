@@ -12,7 +12,7 @@ class SnsEventHandlerTest extends TestCase
         }
 
         $this->client = $this->getMockBuilder('Aws\Sns\SnsClient')
-            ->setMethods(array('formatAttributes', '__call'))
+            ->setMethods(['formatAttributes', '__call'])
             ->disableOriginalConstructor()->getMock();
     }
 
@@ -42,7 +42,7 @@ class SnsEventHandlerTest extends TestCase
     {
         $record = $this->getRecord();
         $formatter = $this->getMock('Monolog\Formatter\FormatterInterface');
-        $formatted = array('foo' => 1, 'bar' => 2);
+        $formatted = ['foo' => 1, 'bar' => 2];
         $handler = new SnsEventHandler($this->client, 'foo');
         $handler->setFormatter($formatter);
 
@@ -54,10 +54,10 @@ class SnsEventHandlerTest extends TestCase
         $this->client
              ->expects($this->once())
              ->method('__call')
-             ->with('publish', array(array(
+             ->with('publish', [[
                  'TopicArn' => 'foo',
                  'Message' => $formatted,
-             )));
+             ]]);
 
         $handler->handle($record);
     }

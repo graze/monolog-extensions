@@ -10,10 +10,11 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog;
 
-use Graze\Monolog\Processor\ExceptionMessageProcessor;
 use Graze\Monolog\Processor\EnvironmentProcessor;
+use Graze\Monolog\Processor\ExceptionMessageProcessor;
 use Graze\Monolog\Processor\HttpProcessor;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
@@ -25,7 +26,7 @@ class LoggerBuilder
     /**
      * @var HandlerInterface[]
      */
-    protected $handlers = array();
+    protected $handlers = [];
 
     /**
      * @var string
@@ -35,7 +36,7 @@ class LoggerBuilder
     /**
      * @var Callable[]
      */
-    protected $processors = array();
+    protected $processors = [];
 
     /**
      * @return Logger
@@ -59,6 +60,7 @@ class LoggerBuilder
 
     /**
      * @param string $name
+     *
      * @return LoggerBuilder
      */
     public function setName($name)
@@ -70,6 +72,7 @@ class LoggerBuilder
 
     /**
      * @param HandlerInterface $handler
+     *
      * @return LoggerBuilder
      */
     public function addHandler(HandlerInterface $handler)
@@ -89,11 +92,12 @@ class LoggerBuilder
 
     /**
      * @param HandlerInterface[] $handlers
+     *
      * @return LoggerBuilder
      */
     public function setHandlers(array $handlers)
     {
-        $this->handlers = array();
+        $this->handlers = [];
 
         foreach ($handlers as $handler) {
             $this->addHandler($handler);
@@ -103,12 +107,15 @@ class LoggerBuilder
     }
 
     /**
-     * @param Callable $processor
+     * @param callable $processor
+     *
      * @return LoggerBuilder
      */
-    public function addProcessor($processor)
+    public function addProcessor(callable $processor)
     {
         $this->processors[] = $processor;
+
+        return $this;
     }
 
     /**
@@ -120,12 +127,13 @@ class LoggerBuilder
     }
 
     /**
-     * @param Callable $processors
+     * @param callable[] $processors
+     *
      * @return LoggerBuilder
      */
     public function setProcessors(array $processors)
     {
-        $this->processors = array();
+        $this->processors = [];
 
         foreach ($processors as $processor) {
             $this->addProcessor($processor);
@@ -139,7 +147,7 @@ class LoggerBuilder
      */
     protected function getDefaultHandlers()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -147,10 +155,10 @@ class LoggerBuilder
      */
     protected function getDefaultProcessors()
     {
-        return array(
+        return [
             new ExceptionMessageProcessor(),
             new EnvironmentProcessor(),
-            new HttpProcessor()
-        );
+            new HttpProcessor(),
+        ];
     }
 }

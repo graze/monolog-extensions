@@ -34,7 +34,8 @@ class RaygunHandlerTest extends TestCase
 
     public function testHandleError()
     {
-        $record = $this->getRecord(300,
+        $record = $this->getRecord(
+            300,
             'foo',
             [
                 'file' => 'bar',
@@ -44,11 +45,12 @@ class RaygunHandlerTest extends TestCase
         $record['context']['tags'] = ['foo'];
         $record['context']['timestamp'] = 1234567890;
         $record['extra'] = ['bar' => 'baz', 'tags' => ['bar']];
-        $formatted = array_merge($record,
+        $formatted = array_merge(
+            $record,
             [
-                'tags'        => ['foo', 'bar'],
-                'timestamp'   => 1234567890,
-                'custom_data' => ['bar' => 'baz'],
+                'tags' => ['foo', 'bar'],
+                'timestamp' => 1234567890,
+                'custom_data' => ['bar' => 'baz']
             ]
         );
 
@@ -75,11 +77,12 @@ class RaygunHandlerTest extends TestCase
         $record = $this->getRecord(300, 'foo', ['exception' => $exception]);
         $record['extra'] = ['bar' => 'baz', 'tags' => ['foo', 'bar']];
         $record['extra']['timestamp'] = 1234567890;
-        $formatted = array_merge($record,
+        $formatted = array_merge(
+            $record,
             [
-                'tags'        => ['foo', 'bar'],
-                'timestamp'   => 1234567890,
-                'custom_data' => ['bar' => 'baz'],
+                'tags' => ['foo', 'bar'],
+                'timestamp' => 1234567890,
+                'custom_data' => ['bar' => 'baz']
             ]
         );
         $formatted['context']['exception'] = [
@@ -140,7 +143,8 @@ class RaygunHandlerTest extends TestCase
         $exception = new \TypeError('foo');
         $record = $this->getRecord(300, 'foo', ['exception' => $exception]);
         $record['context']['tags'] = ['foo'];
-        $formatted = array_merge($record,
+        $formatted = array_merge(
+            $record,
             [
                 'tags'        => ['foo'],
                 'custom_data' => [],

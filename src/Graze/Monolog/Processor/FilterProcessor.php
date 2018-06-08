@@ -10,6 +10,7 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog\Processor;
 
 class FilterProcessor
@@ -25,10 +26,10 @@ class FilterProcessor
     protected $replacement;
 
     /**
-     * @param array $keys
+     * @param array  $keys
      * @param string $replacement
      */
-    public function __construct(array $keys = array(), $replacement = null)
+    public function __construct(array $keys = [], $replacement = null)
     {
         $this->keys = $keys;
         $this->replacement = $replacement;
@@ -36,15 +37,17 @@ class FilterProcessor
 
     /**
      * @param array $record
+     *
+     * @return array
      */
     public function __invoke(array $record)
     {
-        array_walk_recursive($record, array($this, 'filterValue'));
+        array_walk_recursive($record, [$this, 'filterValue']);
         return $record;
     }
 
     /**
-     * @param mixed &$value
+     * @param mixed  $value Value to filter as reference
      * @param string $key
      */
     protected function filterValue(&$value, $key)

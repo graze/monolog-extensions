@@ -31,16 +31,16 @@ class Event
      * @param array $handlers
      * @return $this
      */
-    public function __construct(array $handlers = array())
+    public function __construct(array $handlers = [])
     {
         $this->handlers = $handlers;
-        $this->eventData = array(
+        $this->eventData = [
             'eventIdentifier' => 'defaultEvent',
             'timestamp'       => $this->getNow(),
-            'data'            => array(),
-            'metadata'        => array(),
+            'data'            => [],
+            'metadata'        => [],
 
-        );
+        ];
     }
 
     /**
@@ -84,7 +84,7 @@ class Event
     /**
      * triggers all the event handlers set for this event
      *
-     * @return  boolean true if at least one handler set
+     * @return  bool true if at least one handler set
      */
     public function publish()
     {

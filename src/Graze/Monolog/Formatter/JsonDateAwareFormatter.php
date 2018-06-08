@@ -10,6 +10,7 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog\Formatter;
 
 use Monolog\Formatter\NormalizerFormatter;
@@ -18,6 +19,10 @@ class JsonDateAwareFormatter extends NormalizerFormatter
 {
     /**
      * {@inheritdoc}
+     *
+     * @param  array $record A record to format
+     *
+     * @return mixed The formatted record
      */
     public function format(array $record)
     {
@@ -27,6 +32,10 @@ class JsonDateAwareFormatter extends NormalizerFormatter
 
     /**
      * {@inheritdoc}
+     *
+     * @param  array $records A set of records to format
+     *
+     * @return mixed The formatted set of records
      */
     public function formatBatch(array $records)
     {

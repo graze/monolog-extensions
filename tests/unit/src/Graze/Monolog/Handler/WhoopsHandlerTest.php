@@ -27,7 +27,7 @@ class WhoopsHandlerTest extends TestCase
 
     public function testHandleError()
     {
-        $record = $this->getRecord(300, 'test', array('file' => 'bar', 'line' => 1));
+        $record = $this->getRecord(300, 'test', ['file' => 'bar', 'line' => 1]);
         
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         
@@ -59,7 +59,7 @@ class WhoopsHandlerTest extends TestCase
     {
         $exception = new \Whoops\Exception\ErrorException('foo');
         
-        $record = $this->getRecord(300, 'foo', array('exception' => $exception));
+        $record = $this->getRecord(300, 'foo', ['exception' => $exception]);
         
         $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         

@@ -5,8 +5,10 @@ class ErrorHandlerBuilderIntegrationTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->defaultErrorHandler = set_error_handler(function(){});
-        $this->defaultExceptionHandler = set_exception_handler(function(){});
+        $this->defaultErrorHandler = set_error_handler(function () {
+        });
+        $this->defaultExceptionHandler = set_exception_handler(function () {
+        });
         $this->tearDown();
 
         $this->builder = new ErrorHandlerBuilder();
@@ -22,15 +24,19 @@ class ErrorHandlerBuilderIntegrationTest extends \PHPUnit_Framework_TestCase
     {
         $handler = $this->builder->build();
 
-        $this->assertSame(set_error_handler(function(){}), $this->defaultErrorHandler);
-        $this->assertSame(set_exception_handler(function(){}), $this->defaultExceptionHandler);
+        $this->assertSame(set_error_handler(function () {
+        }), $this->defaultErrorHandler);
+        $this->assertSame(set_exception_handler(function () {
+        }), $this->defaultExceptionHandler);
     }
 
     public function testBuildAndRegister()
     {
         $handler = $this->builder->buildAndRegister();
 
-        $this->assertSame(set_error_handler(function(){}), array($handler, 'handleError'));
-        $this->assertSame(set_exception_handler(function(){}), array($handler, 'handleException'));
+        $this->assertSame(set_error_handler(function () {
+        }), [$handler, 'handleError']);
+        $this->assertSame(set_exception_handler(function () {
+        }), [$handler, 'handleException']);
     }
 }

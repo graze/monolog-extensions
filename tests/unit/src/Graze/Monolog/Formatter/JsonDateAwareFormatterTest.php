@@ -1,11 +1,16 @@
 <?php
+
 namespace Graze\Monolog\Formatter;
 
 use Monolog\TestCase;
 
 class JsonDateAwareFormatterTest extends TestCase
 {
-
+    /**
+     * @param mixed $data
+     *
+     * @return string
+     */
     public function encodeJson($data)
     {
         if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
@@ -15,17 +20,21 @@ class JsonDateAwareFormatterTest extends TestCase
         return json_encode($data);
     }
 
+    /**
+     * @return array
+     */
     public function dataFormat()
     {
-        return array(
-            array(array('foo'=>'bar'), $this->encodeJson(array('foo'=>'bar'))),
-            array(array('timestamp'=> new \DateTime('@0')), $this->encodeJson(array('timestamp' => '1970-01-01 00:00:00')))
-        );
+        return [
+            [['foo' => 'bar'], $this->encodeJson(['foo' => 'bar'])],
+            [['timestamp' => new \DateTime('@0')], $this->encodeJson(['timestamp' => '1970-01-01 00:00:00'])],
+        ];
     }
 
     /**
      * @dataProvider dataFormat
-     * @param array $input
+     *
+     * @param array  $input
      * @param string $expected
      */
     public function testFormat(array $input, $expected)
@@ -37,10 +46,10 @@ class JsonDateAwareFormatterTest extends TestCase
     public function testFormatBatch()
     {
         $formatter = new JsonDateAwareFormatter();
-        $records = array(
-            array('foo'=>'bar'),
-            array('foo2'=>'bar2'),
-        );
+        $records = [
+            ['foo' => 'bar'],
+            ['foo2' => 'bar2'],
+        ];
         $this->assertEquals($this->encodeJson($records), $formatter->formatBatch($records));
     }
 }

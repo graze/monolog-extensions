@@ -1,33 +1,51 @@
 {
-    "name": "graze/monolog-extensions",
-    "description": "Monolog extensions for use within Graze",
-    "keywords": ["debug", "debugging", "error", "exception", "handler", "handling", "log", "logger", "logging"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Graze tech team",
-            "homepage": "https://github.com/graze/MonologExtensions/graphs/contributors"
-        }
-    ],
-    "autoload": {
-        "psr-0": {
-            "Graze\\Monolog": "./src"
-        }
-    },
-    "require": {
-        "monolog/monolog": "~1.7"
-    },
-    "require-dev": {
-        "adlawson/timezone": "~1.0",
-        "aws/aws-sdk-php": "^3.0",
-        "filp/whoops": "~1.0",
-        "mindscape/raygun4php": "dev-master",
-        "mockery/mockery": "~0.9",
-        "phpunit/phpunit": "~4.0"
-    },
-    "suggest": {
-        "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
-        "mindscape/raygun4php": "Write records to Raygun.io",
-        "filp/whoops": "Handle logs with Whoops handlers"
+  "name": "graze/monolog-extensions",
+  "description": "Monolog extensions for use within Graze",
+  "keywords": [
+    "debug",
+    "debugging",
+    "error",
+    "exception",
+    "handler",
+    "handling",
+    "log",
+    "logger",
+    "logging"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Graze tech team",
+      "homepage": "https://github.com/graze/MonologExtensions/graphs/contributors"
     }
+  ],
+  "config": {
+    "platform": {
+      "php": "7.2"
+    }
+  },
+  "autoload": {
+    "psr-0": {
+      "Graze\\Monolog": "./src"
+    }
+  },
+  "require": {
+    "monolog/monolog": "^1.7",
+    "php": "^5.5|^7.0"
+  },
+  "require-dev": {
+    "adlawson/timezone": "~1.0",
+    "aws/aws-sdk-php": "^3.0",
+    "filp/whoops": "~1.0",
+    "mindscape/raygun4php": "dev-master",
+    "mockery/mockery": "^1.0",
+    "phpunit/phpunit": "^5.7.21|^6|^7",
+    "squizlabs/php_codesniffer": "^3",
+    "graze/standards": "^2"
+  },
+  "suggest": {
+    "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
+    "mindscape/raygun4php": "Write records to Raygun.io",
+    "filp/whoops": "Handle logs with Whoops handlers"
+  }
 }
