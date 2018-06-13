@@ -104,6 +104,28 @@ class RaygunHandlerTest extends TestCase
         $handler->handle($record);
     }
 
+    public function testIsHandling()
+    {
+        $handler = new RaygunHandler($this->client);
+
+        $exception = new \Exception('foo');
+        $handlingRecord1 = $this->getRecord(300, 'foo', array('exception' => $exception));
+
+        $this->assertTrue($handler->isHandling($handlingRecord1));
+
+        $context = array(
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+        );
+        $handlingRecord2 = $this->getRecord(300, 'bar', $context);
+        $this->assertTrue($handler->isHandling($handlingRecord2));
+
+
+        $nonHandlingRecord = $this->getRecord(300, 'baz', array());
+        $this->assertFalse($handler->isHandling($nonHandlingRecord));
+        $this->assertFalse($handler->handle($nonHandlingRecord));
+    }
+
     /**
      * @requires PHP 7
      */
