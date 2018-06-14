@@ -41,7 +41,7 @@ class RaygunHandler extends AbstractProcessingHandler
      */
     public function isHandling(array $record)
     {
-        if (parent::isHandling($record)) {
+        if (parent::isHandling($record) && isset($record['context'])) {
             $context = $record['context'];
 
             //Ensure only valid records will be handled and no InvalidArgumentException will be thrown

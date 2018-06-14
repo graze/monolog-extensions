@@ -2,6 +2,7 @@
 namespace Graze\Monolog\Handler;
 
 use Mockery as m;
+use Monolog\Logger;
 use Monolog\TestCase;
 
 class RaygunHandlerTest extends TestCase
@@ -104,23 +105,47 @@ class RaygunHandlerTest extends TestCase
         $handler->handle($record);
     }
 
-    public function testIsHandling()
+    /**
+     * @dataProvider isHandleData
+     *
+     * @param array $record
+     * @param bool $expected
+     */
+    public function testIsHandling(array $record, $expected)
     {
         $handler = new RaygunHandler($this->client);
 
-        $exception = new \Exception('foo');
-        $handlingRecord1 = $this->getRecord(300, 'foo', array('exception' => $exception));
+        $this->assertEquals($expected, $handler->isHandling($record));
+    }
 
-        $this->assertTrue($handler->isHandling($handlingRecord1));
+    /**
+     * @return array
+     */
+    public function isHandleData()
+    {
+        return [
+            [$this->getRecord(300, 'foo', ['exception' => new \Exception('foo')]), true],
+            [$this->getRecord(300, 'bar', ['file' => '/a/path/to/a/file', 'line' => 123]), true],
+            [$this->getRecord(300, 'baz', ['file' => '/a/path/to/a/file']), false],
+            [$this->getRecord(300, 'faz', ['line' => 456]), false],
+            // no context entry
+            [
+                [
+                    'message'    => 'foobar',
+                    'level'      => 300,
+                    'level_name' => Logger::getLevelName(300),
+                    'channel'    => 'test',
+                    'datetime'   => \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true))),
+                    'extra'      => [],
+                ],
+                false,
+            ],
+        ];
+    }
 
-        $context = array(
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine(),
-        );
-        $handlingRecord2 = $this->getRecord(300, 'bar', $context);
-        $this->assertTrue($handler->isHandling($handlingRecord2));
-
-
+    public function testHandleCallsIsHandlingFirst()
+    {
+        $handler = new RaygunHandler($this->client);
         $nonHandlingRecord = $this->getRecord(300, 'baz', array());
         $this->assertFalse($handler->isHandling($nonHandlingRecord));
         $this->assertFalse($handler->handle($nonHandlingRecord));
