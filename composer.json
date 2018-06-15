@@ -29,5 +29,10 @@
         "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
         "mindscape/raygun4php": "Write records to Raygun.io",
         "filp/whoops": "Handle logs with Whoops handlers"
+    },
+    "config": {
+        "platform": {
+            "php": "7.2"
+        }
     }
 }
