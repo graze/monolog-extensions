@@ -6,6 +6,10 @@
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/graze/monolog-extensions.svg?style=flat-square)](https://scrutinizer-ci.com/g/graze/monolog-extensions/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/graze/monolog-extensions.svg?style=flat-square)](https://scrutinizer-ci.com/g/graze/monolog-extensions)
 [![Total Downloads](https://img.shields.io/packagist/dt/graze/monolog-extensions.svg?style=flat-square)](https://packagist.org/packages/graze/monolog-extensions)
+[![PHP 5.6](http://img.shields.io/badge/php-^5.6-8892BF.svg?style=flat-square)][php]
+[![PHP 7.0](http://img.shields.io/badge/php-^7.0-8892BF.svg?style=flat-square)][php]
+
+[php]:       https://php.net/
 
 This library supplies additional log handlers, formatters and processors for use with [Monolog][monolog].
 The intention is to make use of the library internally with the aim to eventually submit relevant parts to Monolog
