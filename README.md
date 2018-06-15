@@ -1,12 +1,11 @@
 # Monolog Extensions #
 
-[![Latest Stable Version](http://img.shields.io/packagist/v/graze/monolog-extensions.svg?style=flat)][packagist]
-[![Build Status](http://img.shields.io/travis/graze/monolog-extensions/master.svg?style=flat)][travis]
-[![Minimum PHP Version](http://img.shields.io/badge/php-~5.5-8892BF.svg?style=flat)][php]
-
-[travis]:    https://travis-ci.org/graze/monolog-extensions
-[packagist]: https://packagist.org/packages/graze/monolog-extensions
-[php]:       https://php.net/
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/graze/monolog-extensions.svg?style=flat-square)](https://packagist.org/packages/graze/monolog-extensions)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/graze/monolog-extensions/master.svg?style=flat-square)](https://travis-ci.org/graze/monolog-extensions)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/graze/monolog-extensions.svg?style=flat-square)](https://scrutinizer-ci.com/g/graze/monolog-extensions/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/graze/monolog-extensions.svg?style=flat-square)](https://scrutinizer-ci.com/g/graze/monolog-extensions)
+[![Total Downloads](https://img.shields.io/packagist/dt/graze/monolog-extensions.svg?style=flat-square)](https://packagist.org/packages/graze/monolog-extensions)
 
 This library supplies additional log handlers, formatters and processors for use with [Monolog][monolog].
 The intention is to make use of the library internally with the aim to eventually submit relevant parts to Monolog
@@ -53,17 +52,7 @@ We accept contributions to the source via Pull Request,
 but passing unit tests must be included before it will be considered for merge.
 ```bash
 $ make
-$ make tests
-```
-
-If you have [Vagrant][vagrant] installed, you can build our dev environment to assist development.
-The repository will be mounted in `/srv`.
-```bash
-$ vagrant up
-$ vagrant ssh
-
-Welcome to Ubuntu 12.04 LTS (GNU/Linux 3.2.0-23-generic x86_64)
-$ cd /srv
+$ make test
 ```
 
 ### License
@@ -74,5 +63,4 @@ The content of this library is released under the **MIT License** by **Nature De
 [travis-master]: https://travis-ci.org/graze/MonologExtensions.png?branch=master
 [monolog]:   https://github.com/Seldaek/monolog
 [packagist]: https://packagist.org/packages/graze/monolog-extensions
-[vagrant]:   http://vagrantup.com
 [license]:   /LICENSE

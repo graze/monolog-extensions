@@ -56,6 +56,10 @@ class DynamoDbEventHandlerTest extends TestCase
              ->with($record)
              ->will($this->returnValue($raw));
         $this->client
+            ->method('formatAttributes')
+            ->with($raw)
+            ->will($this->returnValue($formatted));
+        $this->client
              ->expects($this->once())
              ->method('__call')
              ->with('putItem', [[
