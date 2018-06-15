@@ -28,7 +28,7 @@ class LoggerBuilderIntegrationTest extends TestCase
             } catch (\Exception $e) {
                 $exception = $e;
             }
-        } while (is_null($e));
+        } while (is_null($exception));
 
         $this->assertSame([], $handlers, 'There are more handlers defined than should be');
     }
