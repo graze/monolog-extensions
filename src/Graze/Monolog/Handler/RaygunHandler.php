@@ -10,6 +10,7 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog\Handler;
 
 use Graze\Monolog\Formatter\RaygunFormatter;
@@ -26,8 +27,8 @@ class RaygunHandler extends AbstractProcessingHandler
 
     /**
      * @param RaygunClient $client
-     * @param int $level
-     * @param bool $bubble
+     * @param int          $level
+     * @param bool         $bubble
      */
     public function __construct(RaygunClient $client, $level = Logger::DEBUG, $bubble = true)
     {
@@ -37,38 +38,16 @@ class RaygunHandler extends AbstractProcessingHandler
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function isHandling(array $record)
-    {
-        if (parent::isHandling($record) && isset($record['context'])) {
-            $context = $record['context'];
-
-            //Ensure only valid records will be handled and no InvalidArgumentException will be thrown
-            if ((isset($context['exception']) &&
-                    (
-                        $context['exception'] instanceof \Exception ||
-                        (PHP_VERSION_ID > 70000 && $context['exception'] instanceof \Throwable)
-                    )
-                ) || (isset($context['file']) && isset($context['line']))
-            ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * @param array $record
      */
     protected function write(array $record)
     {
         $context = $record['context'];
 
-        if (isset($context['exception']) &&
-            (
-                $context['exception'] instanceof \Exception ||
-                (PHP_VERSION_ID > 70000 && $context['exception'] instanceof \Throwable)
+        if (isset($context['exception'])
+            && (
+                $context['exception'] instanceof \Exception
+                || (PHP_VERSION_ID > 70000 && $context['exception'] instanceof \Throwable)
             )
         ) {
             $this->writeException(
@@ -77,25 +56,24 @@ class RaygunHandler extends AbstractProcessingHandler
                 $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
-        } elseif (isset($context['file']) && $context['line']) {
+        } elseif (isset($context['file']) && isset($context['line'])) {
             $this->writeError(
                 $record['formatted'],
                 $record['formatted']['tags'],
                 $record['formatted']['custom_data'],
                 $record['formatted']['timestamp']
             );
-        } else {
-            throw new \InvalidArgumentException('Invalid record given.');
         }
+        // do nothing if its not an exception or an error
     }
 
     /**
-     * @param array $record
-     * @param array $tags
-     * @param array $customData
+     * @param array     $record
+     * @param array     $tags
+     * @param array     $customData
      * @param int|float $timestamp
      */
-    protected function writeError(array $record, array $tags = array(), array $customData = array(), $timestamp = null)
+    protected function writeError(array $record, array $tags = [], array $customData = [], $timestamp = null)
     {
         $context = $record['context'];
         $this->client->SendError(
@@ -110,12 +88,12 @@ class RaygunHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @param array $record
-     * @param array $tags
-     * @param array $customData
+     * @param array     $record
+     * @param array     $tags
+     * @param array     $customData
      * @param int|float $timestamp
      */
-    protected function writeException(array $record, array $tags = array(), array $customData = array(), $timestamp = null)
+    protected function writeException(array $record, array $tags = [], array $customData = [], $timestamp = null)
     {
         $this->client->SendException($record['context']['exception'], $tags, $customData, $timestamp);
     }

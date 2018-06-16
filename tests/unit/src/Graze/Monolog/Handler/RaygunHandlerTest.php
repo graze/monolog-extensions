@@ -105,50 +105,30 @@ class RaygunHandlerTest extends TestCase
         $handler->handle($record);
     }
 
-    /**
-     * @dataProvider isHandleData
-     *
-     * @param array $record
-     * @param bool $expected
-     */
-    public function testIsHandling(array $record, $expected)
+    public function testHandleEmptyDoesNothing()
     {
+        $record = $this->getRecord(300, 'bar');
+        $record['extra'] = array('bar' => 'baz', 'tags' => array('foo', 'bar'));
+        $record['extra']['timestamp'] = 1234567890;
+        $formatted = array_merge($record,
+            array(
+                'tags' => array('foo', 'bar'),
+                'timestamp' => 1234567890,
+                'custom_data' => array('bar' => 'baz')
+            )
+        );
+
+        $formatter = m::mock('Monolog\\Formatter\\FormatterInterface');
         $handler = new RaygunHandler($this->client);
+        $handler->setFormatter($formatter);
 
-        $this->assertEquals($expected, $handler->isHandling($record));
-    }
+        $formatter
+            ->shouldReceive('format')
+            ->once()
+            ->with($record)
+            ->andReturn($formatted);
 
-    /**
-     * @return array
-     */
-    public function isHandleData()
-    {
-        return [
-            [$this->getRecord(300, 'foo', ['exception' => new \Exception('foo')]), true],
-            [$this->getRecord(300, 'bar', ['file' => '/a/path/to/a/file', 'line' => 123]), true],
-            [$this->getRecord(300, 'baz', ['file' => '/a/path/to/a/file']), false],
-            [$this->getRecord(300, 'faz', ['line' => 456]), false],
-            // no context entry
-            [
-                [
-                    'message'    => 'foobar',
-                    'level'      => 300,
-                    'level_name' => Logger::getLevelName(300),
-                    'channel'    => 'test',
-                    'datetime'   => \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true))),
-                    'extra'      => [],
-                ],
-                false,
-            ],
-        ];
-    }
-
-    public function testHandleCallsIsHandlingFirst()
-    {
-        $handler = new RaygunHandler($this->client);
-        $nonHandlingRecord = $this->getRecord(300, 'baz', array());
-        $this->assertFalse($handler->isHandling($nonHandlingRecord));
-        $this->assertFalse($handler->handle($nonHandlingRecord));
+        $handler->handle($record);
     }
 
     /**
