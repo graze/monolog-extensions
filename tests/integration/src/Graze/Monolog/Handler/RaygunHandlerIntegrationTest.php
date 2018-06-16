@@ -3,7 +3,6 @@
 namespace Graze\Monolog\Handler;
 
 use Mockery;
-use Mockery\MockInterface;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Raygun4php\RaygunClient;
@@ -13,7 +12,7 @@ class RaygunHandlerIntegrationTest extends TestCase
 {
     /** @var Logger */
     private $logger;
-    /** @var RaygunClient|MockInterface */
+    /** @var mixed */
     private $raygun;
     /** @var RaygunHandler */
     private $handler;
