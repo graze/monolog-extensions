@@ -27,7 +27,6 @@
         "sebastian/comparator": ">1.2.3",
         "squizlabs/php_codesniffer": "^3",
         "graze/standards": "^2"
-
     },
     "suggest": {
         "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
