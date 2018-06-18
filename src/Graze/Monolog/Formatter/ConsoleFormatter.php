@@ -13,8 +13,8 @@
 
 namespace Graze\Monolog\Formatter;
 
-use Monolog\Logger;
 use Monolog\Formatter\NormalizerFormatter;
+use Monolog\Logger;
 
 class ConsoleFormatter extends NormalizerFormatter
 {
@@ -23,26 +23,26 @@ class ConsoleFormatter extends NormalizerFormatter
      *
      * @var array
      */
-    protected $logLevelToColour = array(
-        Logger::DEBUG       => ['1;37', '0;36'], // Cyan
-        Logger::INFO        => ['1;37', '0;32'], // Green
-        Logger::NOTICE      => ['1;37', '1;33'], // Yellow
-        Logger::WARNING     => ['1;37', '0;35'], // Purple
-        Logger::ERROR       => ['1;37', '0;31'], // Red
-        Logger::CRITICAL    => ['0;30','43'], // Black/Yellow
-        Logger::ALERT       => ['1;37','45'], // White/Purple
-        Logger::EMERGENCY   => ['1;37','41'], // White/Red
-     );
+    protected $logLevelToColour = [
+        Logger::DEBUG     => ['1;37', '0;36'], // Cyan
+        Logger::INFO      => ['1;37', '0;32'], // Green
+        Logger::NOTICE    => ['1;37', '1;33'], // Yellow
+        Logger::WARNING   => ['1;37', '0;35'], // Purple
+        Logger::ERROR     => ['1;37', '0;31'], // Red
+        Logger::CRITICAL  => ['0;30', '43'], // Black/Yellow
+        Logger::ALERT     => ['1;37', '45'], // White/Purple
+        Logger::EMERGENCY => ['1;37', '41'], // White/Red
+    ];
 
-     /**
-      * @var array
-      */
-     private $columnLengthMax = [];
+    /**
+     * @var array
+     */
+    private $columnLengthMax = [];
 
-     /**
-      * @var array
-      */
-     private $rows = [];
+    /**
+     * @var array
+     */
+    private $rows = [];
 
     /**
      * @param string $dateFormat The format of the timestamp: one supported by DateTime::format
@@ -110,7 +110,7 @@ class ConsoleFormatter extends NormalizerFormatter
      *
      * @return string
      */
-    protected function render($colours)
+    protected function render(array $colours)
     {
         $separator = '+';
 
@@ -124,9 +124,9 @@ class ConsoleFormatter extends NormalizerFormatter
             $output .= PHP_EOL . '|';
 
             foreach ($this->columnLengthMax as $key => $null) {
-                $cellContent = isset($row[$key]) ? $row[$key]: '';
+                $cellContent = isset($row[$key]) ? $row[$key] : '';
 
-                $output .= ' ' . str_pad($cellContent, $this->columnLengthMax[$key])  . ' |';
+                $output .= ' ' . str_pad($cellContent, $this->columnLengthMax[$key]) . ' |';
             }
         }
 
@@ -138,7 +138,7 @@ class ConsoleFormatter extends NormalizerFormatter
     }
 
     /**
-     * @param $logLevel
+     * @param int $logLevel
      *
      * @return array
      */

@@ -10,14 +10,15 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog\Handler;
 
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
-use Whoops\Handler\Handler;
-use Whoops\Handler\HandlerInterface as WhoopsHandlerInterface;
 use Whoops\Exception\ErrorException as WhoopsErrorException;
 use Whoops\Exception\Inspector as WhoopsInspector;
+use Whoops\Handler\Handler;
+use Whoops\Handler\HandlerInterface as WhoopsHandlerInterface;
 use Whoops\Run as WhoopsRun;
 
 /**
@@ -34,8 +35,8 @@ class WhoopsHandler extends AbstractProcessingHandler
 
     /**
      * @param WhoopsHandlerInterface $whoopsHandler
-     * @param integer $level
-     * @param boolean $bubble
+     * @param int                    $level
+     * @param bool                   $bubble
      */
     public function __construct(WhoopsHandlerInterface $whoopsHandler, $level = Logger::DEBUG, $bubble = true)
     {
@@ -72,26 +73,26 @@ class WhoopsHandler extends AbstractProcessingHandler
             $record['context']['file'],
             $record['context']['line']
         );
-        
+
         $this->writeException($exception);
     }
 
     /**
-     * @param Exception $exception
+     * @param \Exception $exception
      */
     protected function writeException(\Exception $exception)
     {
         $whoopsInspector = new WhoopsInspector($exception);
-        
+
         $this->whoopsHandler->setInspector($whoopsInspector);
         $this->whoopsHandler->setException($exception);
         $this->whoopsHandler->setRun(new WhoopsRun);
-        
+
         $whoopsHandleResponse = $this->whoopsHandler->handle();
-        
+
         $this->processWhoopsBubbling($whoopsHandleResponse);
     }
-    
+
     /**
      * Map Whoops->handle() responses to Monolog bubbling
      *

@@ -10,6 +10,7 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog\Processor;
 
 class EnvironmentProcessor
@@ -25,7 +26,8 @@ class EnvironmentProcessor
     protected $host;
 
     /**
-     * @param array $env
+     * @param array       $env
+     * @param string|null $host
      */
     public function __construct(array $env = null, $host = null)
     {
@@ -42,6 +44,7 @@ class EnvironmentProcessor
 
     /**
      * @param array $record
+     *
      * @return array
      */
     public function __invoke(array $record)

@@ -26,20 +26,20 @@ class LoggerBuilderTest extends \PHPUnit_Framework_TestCase
         $handler = m::mock('Monolog\Handler\HandlerInterface');
         $this->builder->addHandler($handler);
 
-        $this->assertSame(array($handler), $this->builder->getHandlers());
+        $this->assertSame([$handler], $this->builder->getHandlers());
     }
 
     public function testGetHandlers()
     {
-        $this->assertSame(array(), $this->builder->getHandlers());
+        $this->assertSame([], $this->builder->getHandlers());
     }
 
     public function testSetHandlers()
     {
-        $handlers = array(
+        $handlers = [
             m::mock('Monolog\Handler\HandlerInterface'),
             m::mock('Monolog\Handler\HandlerInterface')
-        );
+        ];
 
         $this->builder->setHandlers($handlers);
         $this->assertSame($handlers, $this->builder->getHandlers());
@@ -47,23 +47,26 @@ class LoggerBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddProcessor()
     {
-        $processor = function(){};
+        $processor = function () {
+        };
         $this->builder->addProcessor($processor);
 
-        $this->assertSame(array($processor), $this->builder->getProcessors());
+        $this->assertSame([$processor], $this->builder->getProcessors());
     }
 
     public function testGetProcessors()
     {
-        $this->assertSame(array(), $this->builder->getProcessors());
+        $this->assertSame([], $this->builder->getProcessors());
     }
 
     public function testSetProcessors()
     {
-        $processors = array(
-            function(){},
-            function(){}
-        );
+        $processors = [
+            function () {
+            },
+            function () {
+            }
+        ];
 
         $this->builder->setProcessors($processors);
         $this->assertSame($processors, $this->builder->getProcessors());

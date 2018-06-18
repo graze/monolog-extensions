@@ -20,7 +20,7 @@ class DynamoDbEventHandler extends DynamoDbHandler
      * Event handlers handle all events by default
      *
      * @param array $record
-     * @return boolean always returns true
+     * @return bool always returns true
      */
     public function isHandling(array $record)
     {

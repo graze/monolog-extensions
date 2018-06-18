@@ -21,7 +21,7 @@ class ErrorHandlerBuilder
     /**
      * @var array
      */
-    protected $errorLevelMap = array();
+    protected $errorLevelMap = [];
 
     /**
      * @var string

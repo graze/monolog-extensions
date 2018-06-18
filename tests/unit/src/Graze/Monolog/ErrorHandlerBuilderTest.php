@@ -1,10 +1,11 @@
 <?php
+
 namespace Graze\Monolog;
 
-use Mockery as m;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class ErrorHandlerBuilderTest extends \PHPUnit_Framework_TestCase
+class ErrorHandlerBuilderTest extends TestCase
 {
     public function setUp()
     {
@@ -13,12 +14,12 @@ class ErrorHandlerBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetErrorLevelMap()
     {
-        $this->assertSame(array(), $this->builder->getErrorLevelMap());
+        $this->assertSame([], $this->builder->getErrorLevelMap());
     }
 
     public function testSetErrorLevelMap()
     {
-        $map = array('foo' => 'bar');
+        $map = ['foo' => 'bar'];
 
         $this->builder->setErrorLevelMap($map);
         $this->assertSame($map, $this->builder->getErrorLevelMap());

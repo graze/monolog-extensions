@@ -10,6 +10,7 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog\Handler;
 
 use Aws\Sns\SnsClient;
@@ -20,11 +21,17 @@ class SnsEventHandler extends AbstractProcessingHandler
 {
     const DATE_FORMAT = 'Y-m-d\TH:i:s.uO';
 
+    /** @var SnsClient */
+    private $client;
+    /** @var string */
+    private $topic;
+
     /**
      * @param SnsClient $client
-     * @param string $topic  aws TopicArn
+     * @param string    $topic aws TopicArn
      */
-    public function __construct(SnsClient $client, $topic) {
+    public function __construct(SnsClient $client, $topic)
+    {
         $this->client = $client;
         $this->topic = $topic;
         parent::__construct();
@@ -34,7 +41,8 @@ class SnsEventHandler extends AbstractProcessingHandler
      * Event handlers handle all events by default
      *
      * @param array $record
-     * @return boolean always returns true
+     *
+     * @return bool always returns true
      */
     public function isHandling(array $record)
     {
@@ -43,17 +51,19 @@ class SnsEventHandler extends AbstractProcessingHandler
 
     /**
      * {@inheritdoc}
+     *
+     * @param array $record
      */
     protected function write(array $record)
     {
-        $this->client->publish(array(
+        $this->client->publish([
             'TopicArn' => $this->topic,
-            'Message' => $record['formatted'],
-        ));
+            'Message'  => $record['formatted'],
+        ]);
     }
 
     /**
-     * @return Graze\Monolog\Formatter\JsonDateAwareFormatter
+     * @return JsonDateAwareFormatter
      */
     protected function getDefaultFormatter()
     {

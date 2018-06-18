@@ -10,6 +10,7 @@
  * @see  http://github.com/graze/MonologExtensions/blob/master/LICENSE
  * @link http://github.com/graze/MonologExtensions
  */
+
 namespace Graze\Monolog\Processor;
 
 class DynamoDbSecondaryIndexProcessor
@@ -22,7 +23,7 @@ class DynamoDbSecondaryIndexProcessor
     /**
      * @param array $secondaryIndexes
      */
-    public function __construct(array $secondaryIndexes = array())
+    public function __construct(array $secondaryIndexes = [])
     {
         $this->secondaryIndexes = $secondaryIndexes;
     }
@@ -31,6 +32,8 @@ class DynamoDbSecondaryIndexProcessor
      * Sets up secondary indexes for dynamodb table
      *
      * @param array $record
+     *
+     * @return array
      */
     public function __invoke(array $record)
     {
@@ -43,10 +46,11 @@ class DynamoDbSecondaryIndexProcessor
      *
      * @param array $record
      * @param array $keys
-     * @param  array &$foundKeys
+     * @param array $foundKeys
+     *
      * @return array $foundKeys
      */
-    private function retrieveSecondaryIndexes(array $record, array $keys, array &$foundKeys = array())
+    private function retrieveSecondaryIndexes(array $record, array $keys, array &$foundKeys = [])
     {
         foreach ($record as $key => $value) {
             if (in_array($key, $keys)) {

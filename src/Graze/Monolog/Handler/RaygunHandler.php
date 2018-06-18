@@ -106,4 +106,3 @@ class RaygunHandler extends AbstractProcessingHandler
         return new RaygunFormatter();
     }
 }
-

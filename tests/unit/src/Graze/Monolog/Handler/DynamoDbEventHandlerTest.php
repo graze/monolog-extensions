@@ -12,7 +12,7 @@ class DynamoDbEventHandlerTest extends TestCase
         }
 
         $this->client = $this->getMockBuilder('Aws\DynamoDb\DynamoDbClient')
-            ->setMethods(array('formatAttributes', '__call'))
+            ->setMethods(['formatAttributes', '__call'])
             ->disableOriginalConstructor()->getMock();
     }
 
@@ -56,12 +56,16 @@ class DynamoDbEventHandlerTest extends TestCase
              ->with($record)
              ->will($this->returnValue($raw));
         $this->client
+            ->method('formatAttributes')
+            ->with($raw)
+            ->will($this->returnValue($formatted));
+        $this->client
              ->expects($this->once())
              ->method('__call')
-             ->with('putItem', array(array(
+             ->with('putItem', [[
                  'TableName' => 'foo',
                  'Item' => $formatted
-             )));
+             ]]);
 
         $handler->handle($record);
     }
