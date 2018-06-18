@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bb3b4a57afc94ba3a4d751de38ffaa0",
+    "content-hash": "16ebdd79c56f429715a2f01f519ac619",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -180,16 +180,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.61.7",
+            "version": "3.61.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3e588fc5bed3f3e0fb48c4320883fbf5b26076af"
+                "reference": "7df3b62d06da6512c752b2fd224a65fc0d8c0cbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3e588fc5bed3f3e0fb48c4320883fbf5b26076af",
-                "reference": "3e588fc5bed3f3e0fb48c4320883fbf5b26076af",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7df3b62d06da6512c752b2fd224a65fc0d8c0cbe",
+                "reference": "7df3b62d06da6512c752b2fd224a65fc0d8c0cbe",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-06-14T22:16:36+00:00"
+            "time": "2018-06-15T21:48:00+00:00"
         },
         {
             "name": "doctrine/instantiator",

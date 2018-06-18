@@ -15,7 +15,7 @@
         }
     },
     "require": {
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.7"
     },
     "require-dev": {
         "adlawson/timezone": "^1.0",
