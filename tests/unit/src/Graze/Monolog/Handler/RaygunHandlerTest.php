@@ -114,7 +114,8 @@ class RaygunHandlerTest extends TestCase
         $record = $this->getRecord(300, 'bar');
         $record['extra'] = ['bar' => 'baz', 'tags' => ['foo', 'bar']];
         $record['extra']['timestamp'] = 1234567890;
-        $formatted = array_merge($record,
+        $formatted = array_merge(
+            $record,
             [
                 'tags'        => ['foo', 'bar'],
                 'timestamp'   => 1234567890,
