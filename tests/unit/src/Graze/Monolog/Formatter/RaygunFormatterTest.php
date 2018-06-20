@@ -64,7 +64,7 @@ class RaygunFormatterTest extends TestCase
             ],
         ];
         $formatted = $formatter->format($input);
-        unset($formatted['context']['exception']['trace'], $formatted['context']['exception']['previous']);
+        unset($formatted['context']['exception']['trace'], $formatted['context']['exception']['previous'], $formatted['context']['exception']['code']);
 
         $this->assertEquals([
                 'level_name' => 'WARNING',
@@ -75,7 +75,6 @@ class RaygunFormatterTest extends TestCase
                     'exception' => [
                         'class' => get_class($ex),
                         'message' => $ex->getMessage(),
-                        'code' => $ex->getCode(),
                         'file' => $ex->getFile().':'.$ex->getLine(),
                     ]
                 ],
