@@ -14,6 +14,9 @@ namespace Graze\Monolog\Handler;
 
 use Monolog\Handler\DynamoDbHandler;
 
+/**
+ * @deprecated This add no functionality over the Monolog DynamoDbHandler
+ */
 class DynamoDbEventHandler extends DynamoDbHandler
 {
     /**
