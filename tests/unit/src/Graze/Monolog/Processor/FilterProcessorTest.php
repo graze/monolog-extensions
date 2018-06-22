@@ -42,6 +42,7 @@ class FilterProcessorTest extends TestCase
 
         $this->assertEquals('YOU CAN\'T HANDLE THE TRUTH', $result['apples']);
         $this->assertInternalType('array', $result['oranges']);
+        $this->assertEquals([1,2,3], $result['oranges']);
     }
 
     public function testProcessorWorksWithNullReplacementValue()

@@ -52,7 +52,7 @@ class FilterProcessor
      */
     protected function filterValue(&$value, $key)
     {
-        if (in_array($key, $this->keys)) {
+        if (in_array($key, $this->keys, true)) {
             $value = $this->replacement;
         }
     }
