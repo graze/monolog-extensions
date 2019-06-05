@@ -52,9 +52,13 @@ class WhoopsHandler extends AbstractProcessingHandler
     {
         $context = $record['context'];
 
-        if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+        if (isset($context['exception'])
+            && (
+                $context['exception'] instanceof \Exception
+                || (PHP_VERSION_ID > 70000 && $context['exception'] instanceof \Throwable)
+            )) {
             $this->writeException($context['exception']);
-        } elseif (isset($context['file']) && $context['line']) {
+        } elseif (isset($context['file']) && isset($context['line'])) {
             $this->writeError($record);
         }
     }
@@ -78,9 +82,9 @@ class WhoopsHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @param \Exception $exception
+     * @param \Exception|\Throwable $exception
      */
-    protected function writeException(\Exception $exception)
+    protected function writeException($exception)
     {
         $whoopsInspector = new WhoopsInspector($exception);
 
