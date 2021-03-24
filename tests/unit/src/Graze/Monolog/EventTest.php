@@ -1,7 +1,8 @@
 <?php
 namespace Graze\Monolog;
 
-use Monolog\TestCase;
+use Monolog\Handler\HandlerInterface;
+use Monolog\Test\TestCase;
 
 class EventTest extends TestCase
 {
@@ -10,7 +11,7 @@ class EventTest extends TestCase
      */
     public function setupMockHandler()
     {
-        $handler = $this->getMock('Monolog\Handler\HandlerInterface');
+        $handler = $this->createMock(HandlerInterface::class);
         $handler->expects($this->once())
                 ->method('handle');
         return $handler;
@@ -24,6 +25,7 @@ class EventTest extends TestCase
     public function setupMockHandlerWithValidationCallback(callable $callback)
     {
         $handler = $this->setupMockHandler();
+
         $handler->expects($this->once())
                 ->method('handle')
                 ->with($this->callback($callback));

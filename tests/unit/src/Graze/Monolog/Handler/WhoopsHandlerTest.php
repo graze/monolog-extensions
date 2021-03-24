@@ -3,17 +3,23 @@
 namespace Graze\Monolog\Handler;
 
 use Mockery as m;
-use Monolog\TestCase;
+use Monolog\Test\TestCase;
 
 class WhoopsHandlerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!interface_exists('Whoops\Handler\HandlerInterface', true)) {
             $this->markTestSkipped('filp/whoops not installed');
         }
 
         $this->handlerWhoops = m::mock('Whoops\Handler\HandlerInterface');
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        m::close();
     }
 
     public function testConstruct()
@@ -50,7 +56,7 @@ class WhoopsHandlerTest extends TestCase
             ->shouldReceive('handle')
             ->once();
 
-        $handlerMonolog->handle($record);
+        $this->assertFalse($handlerMonolog->handle($record));
     }
 
     public function testHandleException()
@@ -78,7 +84,7 @@ class WhoopsHandlerTest extends TestCase
             ->shouldReceive('handle')
             ->once();
 
-        $handlerMonolog->handle($record);
+        $this->assertFalse($handlerMonolog->handle($record));
     }
 
     /**
@@ -109,7 +115,7 @@ class WhoopsHandlerTest extends TestCase
             ->shouldReceive('handle')
             ->once();
 
-        $handlerMonolog->handle($record);
+        $this->assertFalse($handlerMonolog->handle($record));
     }
 
     /**
@@ -121,7 +127,7 @@ class WhoopsHandlerTest extends TestCase
     {
         $record = $this->getRecord(300, 'test', $context);
         $handlerMonolog = new WhoopsHandler($this->handlerWhoops);
-        $handlerMonolog->handle($record);
+        $this->assertFalse($handlerMonolog->handle($record));
     }
 
     /**

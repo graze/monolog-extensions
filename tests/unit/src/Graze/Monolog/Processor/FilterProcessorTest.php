@@ -1,7 +1,7 @@
 <?php
 namespace Graze\Monolog\Processor;
 
-use Monolog\TestCase;
+use Monolog\Test\TestCase;
 
 class FilterProcessorTest extends TestCase
 {
@@ -41,7 +41,7 @@ class FilterProcessorTest extends TestCase
         $result = $processor($record);
 
         $this->assertEquals('YOU CAN\'T HANDLE THE TRUTH', $result['apples']);
-        $this->assertInternalType('array', $result['oranges']);
+        $this->assertIsArray($result['oranges']);
         $this->assertEquals([1,2,3], $result['oranges']);
     }
 

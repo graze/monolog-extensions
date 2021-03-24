@@ -1,11 +1,11 @@
 <?php
 namespace Graze\Monolog\Handler;
 
-use Monolog\TestCase;
+use Monolog\Test\TestCase;
 
 class SnsEventHandlerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Aws\Sns\SnsClient')) {
             $this->markTestSkipped('aws/aws-sdk-php not installed');
@@ -41,7 +41,7 @@ class SnsEventHandlerTest extends TestCase
     public function testHandle()
     {
         $record = $this->getRecord();
-        $formatter = $this->getMock('Monolog\Formatter\FormatterInterface');
+        $formatter = $this->createMock('Monolog\Formatter\FormatterInterface');
         $formatted = ['foo' => 1, 'bar' => 2];
         $handler = new SnsEventHandler($this->client, 'foo');
         $handler->setFormatter($formatter);

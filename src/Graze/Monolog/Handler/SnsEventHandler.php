@@ -15,6 +15,7 @@ namespace Graze\Monolog\Handler;
 
 use Aws\Sns\SnsClient;
 use Graze\Monolog\Formatter\JsonDateAwareFormatter;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 
 class SnsEventHandler extends AbstractProcessingHandler
@@ -44,7 +45,7 @@ class SnsEventHandler extends AbstractProcessingHandler
      *
      * @return bool always returns true
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return true;
     }
@@ -54,7 +55,7 @@ class SnsEventHandler extends AbstractProcessingHandler
      *
      * @param array $record
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $this->client->publish([
             'TopicArn' => $this->topic,
@@ -65,7 +66,7 @@ class SnsEventHandler extends AbstractProcessingHandler
     /**
      * @return JsonDateAwareFormatter
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new JsonDateAwareFormatter(self::DATE_FORMAT);
     }

@@ -1,11 +1,11 @@
 <?php
 namespace Graze\Monolog\Handler;
 
-use \Monolog\TestCase;
+use Monolog\Test\TestCase;
 
 class DynamoDbEventHandlerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Aws\DynamoDb\DynamoDbClient')) {
             $this->markTestSkipped('aws/aws-sdk-php not installed');
@@ -41,7 +41,7 @@ class DynamoDbEventHandlerTest extends TestCase
     public function testHandle()
     {
         $record = $this->getRecord();
-        $formatter = $this->getMock('Monolog\Formatter\FormatterInterface');
+        $formatter = $this->createMock('Monolog\Formatter\FormatterInterface');
         $raw = ['foo' => 1, 'bar' => 2];
         $formatted = [
             'foo' => ['N' => '1'],

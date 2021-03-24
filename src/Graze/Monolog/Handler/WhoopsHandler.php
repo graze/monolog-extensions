@@ -48,7 +48,7 @@ class WhoopsHandler extends AbstractProcessingHandler
     /**
      * @param array $record
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $context = $record['context'];
 
