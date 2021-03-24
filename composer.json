@@ -15,18 +15,19 @@
         }
     },
     "require": {
-        "monolog/monolog": "^1.7"
+        "monolog/monolog": "^2.0"
     },
     "require-dev": {
         "adlawson/timezone": "^1.0",
         "aws/aws-sdk-php": "^2.4.9|^3.0",
         "filp/whoops": "^2.0",
-        "mindscape/raygun4php": "^1.0",
-        "mockery/mockery": "^0.9",
-        "phpunit/phpunit": "^4.8.36",
+        "mindscape/raygun4php": "^2.0",
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^9",
         "sebastian/comparator": ">1.2.3",
         "squizlabs/php_codesniffer": "^3",
-        "graze/standards": "^2"
+        "graze/standards": "^2",
+        "ext-json": "*"
     },
     "suggest": {
         "aws/aws-sdk-php": "Write records to AWS services like DynamoDb",
@@ -35,7 +36,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "7.3"
         }
     }
 }

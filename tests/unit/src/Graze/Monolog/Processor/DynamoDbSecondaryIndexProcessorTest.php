@@ -1,10 +1,17 @@
 <?php
 namespace Graze\Monolog\Processor;
 
-use Monolog\TestCase;
+use Mockery;
+use Monolog\Test\TestCase;
 
 class DynamoDbSecondaryIndexProcessorTest extends TestCase
 {
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Mockery::close();
+    }
+
     public function testConstruct()
     {
         $this->assertInstanceOf('Graze\Monolog\Processor\DynamoDbSecondaryIndexProcessor', new DynamoDbSecondaryIndexProcessor(["foo", "bar"]));

@@ -22,7 +22,7 @@ class DynamoDbEventHandler extends DynamoDbHandler
      * @param array $record
      * @return bool always returns true
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return true;
     }

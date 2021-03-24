@@ -54,7 +54,7 @@ class ErrorHandlerBuilder
         return ErrorHandler::register(
             $this->getLogger() ?: $this->getDefaultLogger(),
             $this->getErrorLevelMap(),
-            $this->getExceptionLevel(),
+            [ $this->getExceptionLevel() ],
             $this->getFatalLevel()
         );
     }

@@ -14,6 +14,7 @@
 namespace Graze\Monolog\Handler;
 
 use Graze\Monolog\Formatter\RaygunFormatter;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Raygun4php\RaygunClient;
@@ -40,7 +41,7 @@ class RaygunHandler extends AbstractProcessingHandler
     /**
      * @param array $record
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $context = $record['context'];
 
@@ -99,9 +100,9 @@ class RaygunHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @return \Monolog\Formatter\FormatterInterface
+     * @return FormatterInterface
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new RaygunFormatter();
     }

@@ -2,7 +2,7 @@
 
 namespace Graze\Monolog\Formatter;
 
-use Monolog\TestCase;
+use Monolog\Test\TestCase;
 
 class RaygunFormatterTest extends TestCase
 {
@@ -81,7 +81,7 @@ class RaygunFormatterTest extends TestCase
                 'extra' => [],
                 'tags' => ['foo', 'bar'],
                 'timestamp' => 1234567890,
-                'custom_data' => ['bar' => 'baz', 'someClass' => '[object] (stdClass: {"foo":"bar"})'],
+                'custom_data' => ['bar' => 'baz', 'someClass' => [ 'stdClass' => [ 'foo' => 'bar' ] ]],
             ], $formatted);
     }
 }

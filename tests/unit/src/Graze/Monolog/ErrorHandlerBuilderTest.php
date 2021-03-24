@@ -7,7 +7,7 @@ use Psr\Log\LogLevel;
 
 class ErrorHandlerBuilderTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->builder = new ErrorHandlerBuilder();
     }

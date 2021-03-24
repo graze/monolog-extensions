@@ -1,7 +1,7 @@
 SHELL = /bin/sh
 
 DOCKER ?= $(shell which docker)
-PHP_VER := 7.2
+PHP_VER := 7.3
 IMAGE := graze/php-alpine:${PHP_VER}-test
 VOLUME := /srv
 DOCKER_RUN_BASE := ${DOCKER} run --rm -t -v $$(pwd):${VOLUME} -w ${VOLUME}

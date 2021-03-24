@@ -2,7 +2,7 @@
 
 namespace Graze\Monolog\Formatter;
 
-use Monolog\TestCase;
+use Monolog\Test\TestCase;
 
 class JsonDateAwareFormatterTest extends TestCase
 {
@@ -27,7 +27,7 @@ class JsonDateAwareFormatterTest extends TestCase
     {
         return [
             [['foo' => 'bar'], $this->encodeJson(['foo' => 'bar'])],
-            [['timestamp' => new \DateTime('@0')], $this->encodeJson(['timestamp' => '1970-01-01 00:00:00'])],
+            [['timestamp' => new \DateTime('@0')], $this->encodeJson(['timestamp' => '1970-01-01T00:00:00+00:00'])],
         ];
     }
 

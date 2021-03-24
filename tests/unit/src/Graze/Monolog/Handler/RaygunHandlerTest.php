@@ -3,17 +3,24 @@
 namespace Graze\Monolog\Handler;
 
 use Mockery as m;
-use Monolog\TestCase;
+use Monolog\Logger;
+use Monolog\Test\TestCase;
 
 class RaygunHandlerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Raygun4php\RaygunClient')) {
             $this->markTestSkipped('mindscape/raygun4php not installed');
         }
 
         $this->client = m::mock('Raygun4php\RaygunClient');
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        m::close();
     }
 
     public function testConstruct()
@@ -28,7 +35,7 @@ class RaygunHandlerTest extends TestCase
 
     public function testGetFormatter()
     {
-        $handler = new RaygunHandler($this->client, 'foo');
+        $handler = new RaygunHandler($this->client, Logger::DEBUG);
         $this->assertInstanceOf('Monolog\\Formatter\\NormalizerFormatter', $handler->getFormatter());
     }
 
@@ -68,7 +75,7 @@ class RaygunHandlerTest extends TestCase
             ->once()
             ->with(0, 'foo', 'bar', 1, ['foo', 'bar'], ['bar' => 'baz'], 1234567890);
 
-        $handler->handle($record);
+        $this->assertFalse($handler->handle($record));
     }
 
     public function testHandleException()
@@ -106,7 +113,7 @@ class RaygunHandlerTest extends TestCase
             ->once()
             ->with($exception, ['foo', 'bar'], ['bar' => 'baz'], 1234567890);
 
-        $handler->handle($record);
+        $this->assertFalse($handler->handle($record));
     }
 
     public function testHandleEmptyDoesNothing()
@@ -133,7 +140,7 @@ class RaygunHandlerTest extends TestCase
             ->with($record)
             ->andReturn($formatted);
 
-        $handler->handle($record);
+        $this->assertFalse($handler->handle($record));
     }
 
     /**
@@ -167,6 +174,6 @@ class RaygunHandlerTest extends TestCase
             ->once()
             ->with($exception, ['foo'], [], null);
 
-        $handler->handle($record);
+        $this->assertFalse($handler->handle($record));
     }
 }

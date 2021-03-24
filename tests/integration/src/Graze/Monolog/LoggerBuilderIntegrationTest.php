@@ -2,6 +2,7 @@
 
 namespace Graze\Monolog;
 
+use Mockery;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
@@ -10,9 +11,15 @@ class LoggerBuilderIntegrationTest extends TestCase
     /** @var LoggerBuilder */
     private $builder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->builder = new LoggerBuilder();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Mockery::close();
     }
 
     /**

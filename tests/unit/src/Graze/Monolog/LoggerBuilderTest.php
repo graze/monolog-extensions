@@ -2,12 +2,19 @@
 namespace Graze\Monolog;
 
 use Mockery as m;
+use Monolog\Test\TestCase;
 
-class LoggerBuilderTest extends \PHPUnit_Framework_TestCase
+class LoggerBuilderTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->builder = new LoggerBuilder();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        m::close();
     }
 
     public function testGetName()
